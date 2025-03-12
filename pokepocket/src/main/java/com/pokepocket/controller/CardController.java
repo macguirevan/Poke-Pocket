@@ -3,6 +3,7 @@ package com.pokepocket.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,14 @@ public class CardController {
     public List<Card> getAllCards() {
         return cardRepository.findAll();
     }
+
+
+
+    // @GetMapping("/{name}/image")
+    // public String getCardImage(@PathVariable String name) {
+    //     Card card = cardRepository.findByName(name).orElseThrow(() -> new RuntimeException("Card not found"));
+    //     return card.getCardImage();
+    // }
 
     @PostMapping
     public Card createCard(@RequestBody Card card) {

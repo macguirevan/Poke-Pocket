@@ -1,0 +1,5 @@
+Start docker container: docker-compose up -d
+Verify docker container is running: docker ps
+Connect to mySQL inside the container: docker exec -it mysql-db bash
+Create the network: docker network create pokepocket-network
+Build docker image: docker build -t my-spring-boot-app .

@@ -26,6 +26,7 @@ public class Card {
     @Column(nullable = false, unique = true)
     private String name;
 
+    // Store the URL of the image in here
     @Column(nullable = false, unique = true)
     private String cardImage;
 
