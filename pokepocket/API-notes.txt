@@ -1,0 +1,8 @@
+CreateUser (POST) example:
+{
+  "friendId": "1234123412341234",
+  "username": "matt",
+  "email": "matt@example.com",
+  "password": "123"
+}
+
