@@ -6,3 +6,9 @@ CreateUser (POST) example:
   "password": "123"
 }
 
+login (POST) example:
+{
+  "username": "matthew",
+  "password": "123"
+}
+
