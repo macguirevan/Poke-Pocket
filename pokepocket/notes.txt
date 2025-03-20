@@ -4,9 +4,14 @@ Connect to mySQL inside the container: docker exec -it mysql-db bash
 Create the network: docker network create pokepocket-network
 Build docker image: docker build -t my-spring-boot-app .
 Start springboot application: mvn spring-boot:run
+Run database manually: docker exec -it mysql-db mysql -u root -p
+Find all process running on port: netstat -ano | findstr :8080
+Taskkill: taskkill /PID 5596 /F
+
 
 1. Run mySQL database using docker
-- Create the network: docker network create pokepocket-network
+- Cd into pokepocket
+- Create the network (only once): docker network create pokepocket-network
 - Start docker container: docker-compose up -d
 
 2. Start the Springboot application
