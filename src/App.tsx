@@ -1,10 +1,10 @@
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
-import Home from './pages/home/page'
-import Listing from './pages/listing/page'
-import User from './pages/user/page'
-import Login from './pages/login/page'
-import Register from './pages/register/page'
+import Home from './pages/Home/Home'
+import Listing from './pages/Listing/Listing'
+import User from './pages/User/User'
+import Login from './pages/Login/Login'
+import Register from './pages/Register/Register'
 
 export default function App() {
   return (
