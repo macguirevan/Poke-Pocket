@@ -7,8 +7,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root          # Set the root password
       MYSQL_DATABASE: pokepocket         # Set the default database name
-      MYSQL_USER: user                   # Create a user with access to the database
-      MYSQL_PASSWORD: 1234               # Set the user's password
     ports:
       - "3306:3306"  # Expose MySQL port to the host machine
     networks:

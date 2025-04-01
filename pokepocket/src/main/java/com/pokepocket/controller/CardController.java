@@ -2,7 +2,6 @@ package com.pokepocket.controller;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +41,8 @@ public class CardController {
     // }
 
     @PostMapping
-    public Card createCard(@RequestBody Card card) {
-        return cardRepository.save(card);
+    public List<Card> createCards(@RequestBody List<Card> cards) {
+        return cardRepository.saveAll(cards);
     }
+    
 }
