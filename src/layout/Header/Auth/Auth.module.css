@@ -1,0 +1,20 @@
+.auth {
+  display: flex;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin: 0;
+}
+
+.auth a {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 45px;
+}
+
+.login {
+  background-color: white;
+}
+
+.register {
+  background-color: #D1D1D1;
+}
