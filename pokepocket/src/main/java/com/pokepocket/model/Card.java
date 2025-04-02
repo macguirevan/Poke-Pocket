@@ -23,7 +23,7 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cardId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     // Store the URL of the image in here
@@ -32,6 +32,9 @@ public class Card {
 
     // Rarity has a value of int because it makes comparisons faster
     @Column(nullable = false)
-    private int rarity;
+    private String rarity;
+
+    @Column(nullable = false)
+    private String setName;
 }
 
