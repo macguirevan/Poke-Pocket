@@ -1,7 +1,11 @@
+import Layout from '../../layout/Layout'
+
 export default function Listing() {
   return (
-    <div>
-      Listing
-    </div>
+    <Layout>
+      <div>
+        Listing
+      </div>
+    </Layout>
   )
 }
