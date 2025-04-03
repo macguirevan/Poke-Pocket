@@ -13,10 +13,12 @@ services:
       - pokepocket-network
     restart: always  # Restart the container automatically
     hostname: mysql-db-host
+    volumes:
+      - mysql-data:/var/lib/mysql
 
 networks:
   pokepocket-network:
     driver: bridge
 
 volumes:
-  mysql-data: /var/lib/mysql
+  mysql-data: {}
