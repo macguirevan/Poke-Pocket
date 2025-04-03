@@ -1,0 +1,106 @@
+.listing-container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  /* Left Column Styles */
+  .left-column {
+    position: fixed;
+    width: 35%;
+    height: 100vh;
+    padding: 2rem;
+    background: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
+  
+  .card-detail {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .detail-image {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Right Column Styles */
+  .right-column {
+    flex: 1;
+    margin-left: 35%;
+    padding: 2rem 3rem;
+    background: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  .trade-section {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .requested-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 1rem 0;
+  }
+  
+  .trade-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .trade-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .trade-card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    padding: 1rem;
+    background: #f5f5f5;
+  }
+  
+  .trade-card-info {
+    padding: 1rem;
+    border-top: 1px solid #eee;
+  }
+  
+  .trade-card-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .listing-container {
+      flex-direction: column;
+    }
+    
+    .left-column {
+      position: relative;
+      width: 100%;
+      height: auto;
+      box-shadow: none;
+      padding: 1rem;
+    }
+    
+    .right-column {
+      margin-left: 0;
+      padding: 1rem;
+    }
+    
+    .detail-image {
+      max-height: 50vh;
+    }
+    
+    .requested-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }

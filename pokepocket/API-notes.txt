@@ -1,14 +1,74 @@
-CreateUser (POST) example:
+** User **
+
+register (POST) example:
+http://localhost:8080/api/users
 {
   "friendId": "1234123412341234",
   "username": "matt",
   "email": "matt@example.com",
   "password": "123"
 }
-
-login (POST) example:
 {
-  "username": "matthew",
-  "password": "123"
+  "friendId": "1234123412341235",
+  "username": "mattyj",
+  "email": "mattyj@example.com",
+  "password": "456"
 }
 
+login (POST) example:
+http://localhost:8080/api/users/login
+{
+  "username": "matt",
+  "password": "123"
+}
+{
+  "username": "mattyj",
+  "password": "456"
+}
+
+getAllUsers (Get) example:
+http://localhost:8080/api/users
+
+** Trade ** 
+
+createTrade (POST) example:
+http://localhost:8080/api/trades
+{
+  "username": "matt",
+  "offeredCardId": "296",
+  "requestedCard1Id": "298",
+  "requestedCard2Id": "300",
+  "requestedCard3Id": "302",
+  "requestedCard4Id": "303"
+}
+{
+  "username": "mattyj",
+  "offeredCardId": "540",
+  "requestedCard1Id": "541",
+  "requestedCard2Id": "542",
+  "requestedCard3Id": "543",
+  "requestedCard4Id": "544"
+}
+
+getTradeById (GET) example:
+http://localhost:8080/api/trades/{tradeId}
+http://localhost:8080/api/trades/1
+http://localhost:8080/api/trades/2
+
+getTradesByUserId (GET) example:
+http://localhost:8080/api/trades/users/{userId}
+http://localhost:8080/api/trades/users/1
+http://localhost:8080/api/trades/users/4
+
+
+** Card ** 
+
+getCardById (GET) example:
+http://localhost:8080/api/cards/{cardId}
+http://localhost:8080/api/cards/296
+http://localhost:8080/api/cards/540
+
+getCardImage (GET) example:
+http://localhost:8080/api/cards/image/{id}
+http://localhost:8080/api/cards/image/296
+http://localhost:8080/api/cards/image/540

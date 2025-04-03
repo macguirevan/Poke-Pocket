@@ -6,10 +6,32 @@ import Layout from "../../layout/Layout"
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Logging in with:", { username, password });
+    try {
+      // Sending POST request to Spring Boot backend
+      const response = await fetch("http://localhost:8080/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.text(); // Get the response text
+      
+      if (data === "Login successful") {
+        console.log("Login successful");
+        // Redirect user or store JWT token in localStorage/sessionStorage
+      } else {
+        setErrorMessage(data);  // Show error message if login fails
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred during login");
+      console.error(error);
+    }
   };
 
   return (
