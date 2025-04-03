@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public User register(@RequestBody User user) {
         return userRepository.save(user);
     }
 

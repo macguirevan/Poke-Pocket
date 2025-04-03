@@ -17,3 +17,7 @@ Taskkill: taskkill /PID 5596 /F
 2. Start the Springboot application
 - Start springboot application: mvn spring-boot:run
 
+use pokepocket
+show tables;
+DESCRIBE cards;
+DESCRIBE `trade-listings`;
