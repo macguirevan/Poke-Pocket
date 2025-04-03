@@ -6,9 +6,18 @@
 }
 
 .auth a {
-  text-decoration: none;
-  padding: 10px 20px;
+  color: black;
+  padding: 5px 20px;
+  margin: 0 10px;
+  width: 100px;
+  text-align: center;
   border-radius: 45px;
+}
+
+.auth a:hover {
+  cursor: pointer;
+  transition: filter 0.2s ease;
+  filter: brightness(90%);
 }
 
 .login {

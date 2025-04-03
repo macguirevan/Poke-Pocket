@@ -9,3 +9,10 @@
 .header img {
   display: block;
 }
+
+.searchInput {
+  min-width: 20vw;
+  border-radius: 45px;
+  border: none;
+  padding: 5px 10px;
+}

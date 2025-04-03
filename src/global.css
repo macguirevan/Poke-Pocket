@@ -3,3 +3,7 @@
 body {
   margin: 0;
 }
+
+body a {
+  text-decoration: none;
+}
