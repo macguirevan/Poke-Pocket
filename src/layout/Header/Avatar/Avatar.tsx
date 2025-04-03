@@ -38,8 +38,8 @@ export default function Avatar() {
           <div className={styles.profileMenu} ref={menu}>
             <ul>
               <li>
-                <Link to="/listing" onClick={() => toggleDrop()}>
-                  Listings
+                <Link to="/user" onClick={() => toggleDrop()}>
+                  Profile
                 </Link>
               </li>
               <li>
