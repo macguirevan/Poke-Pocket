@@ -26,6 +26,9 @@ http://localhost:8080/api/users/login
   "password": "456"
 }
 
+getAllUsers (Get) example:
+http://localhost:8080/api/users
+
 ** Trade ** 
 
 createTrade (POST) example:

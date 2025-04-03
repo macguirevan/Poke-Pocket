@@ -5,12 +5,57 @@ export default function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [friendID, setFriendID] = useState("");
+  const [friendId, setFriendID] = useState("");
   const [email, setEmail] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Signing up with:", { username, password, email, friendID });
+  
+    console.log(friendId);
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+  
+    if (friendId.length !== 16) {
+      setErrorMessage("Friend ID must be exactly 16 digits");
+      return;
+    }
+  
+    try {
+      const response = await fetch("http://localhost:8080/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          email,
+          friendId,
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to create account");
+      }
+  
+      const data = await response.json();
+      console.log("Success:", data);
+      setSuccessMessage("Account created successfully! You can now log in.");
+      setUsername("");
+      setPassword("");
+      setConfirmPassword("");
+      setEmail("");
+      setFriendID("");
+      setErrorMessage("");
+    } catch (error : any) {
+      console.error("Error:", error);
+      setErrorMessage(error.message || "An error occurred. Please try again.");
+    }
   };
 
   return (
@@ -21,6 +66,16 @@ export default function SignUp() {
       </div>
       <div className="bg-white p-5 rounded shadow-lg w-50">
         <h2 className="text-center mb-4">Create Your Account</h2>
+        {errorMessage && (
+          <div className="alert alert-danger text-center" role="alert">
+            {errorMessage}
+          </div>
+        )}
+        {successMessage && (
+          <div className="alert alert-success text-center" role="alert">
+            {successMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Username</label>
@@ -70,7 +125,7 @@ export default function SignUp() {
             <input 
               type="text" 
               className="form-control text-center" 
-              value={friendID}
+              value={friendId}
               onChange={(e) => {
                 // Only Numbers & Must be 16 digits long
                 const numericValue = e.target.value.replace(/\D/g, "").slice(0, 16);
@@ -81,7 +136,7 @@ export default function SignUp() {
               placeholder="Ex: XXXX-XXXX-XXXX-XXXX"
               required 
             />
-            {friendID.length > 0 && friendID.length < 16 && (
+            {friendId.length > 0 && friendId.length < 16 && (
               <small className="text-danger">Friend ID must be exactly 16 digits</small>
             )}
             <div className="signup-sublabel">Please enter numbers only without any hyphens.</div>

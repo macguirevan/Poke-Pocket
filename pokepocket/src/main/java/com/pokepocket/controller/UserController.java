@@ -3,6 +3,7 @@ package com.pokepocket.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import com.pokepocket.model.User;
 import com.pokepocket.repository.UserRepository;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/users")
 public class UserController {
     private final UserRepository userRepository;
@@ -35,7 +37,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody Map<String, String> loginData) {
-        
+
         // Parse login information
         String username = loginData.get("username");
         String password = loginData.get("password");
