@@ -15,5 +15,16 @@ Taskkill: taskkill /PID 5596 /F
 - Start docker container: docker-compose up -d
 
 2. Start the Springboot application
+- Cd into pokepocket
 - Start springboot application: mvn spring-boot:run
 
+3. How to see what is in the database
+- Cd into pokepocket
+- docker exec -it mysql-db mysql -u root -p
+
+4. Database commands
+use pokepocket
+show tables;
+DESCRIBE cards;
+SELECT COUNT(*) FROM cards;
+DESCRIBE `trade-listings`;

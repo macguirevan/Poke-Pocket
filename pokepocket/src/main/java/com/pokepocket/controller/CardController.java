@@ -26,19 +26,22 @@ public class CardController {
         return cardRepository.findAll();
     }
 
-
-
-    @GetMapping("/{name}/image")
-    public String getCardImage(@PathVariable String name) {
-        Card card = cardRepository.findByName(name).orElseThrow(() -> new RuntimeException("Card not found"));
-        return card.getCardImage();
+    @GetMapping("/{cardId}")
+    public Card getCardById(@PathVariable Long cardId) {
+        return cardRepository.findByCardId(cardId);
     }
 
-    // @GetMapping("/{id}/image")
-    // public String getCardImage(@PathVariable Long id) {
-    //     Card card = cardRepository.findById(id).orElseThrow(() -> new RuntimeException("Card not found"));
+    // @GetMapping("/{name}/image")
+    // public String getCardImage(@PathVariable String name) {
+    //     Card card = cardRepository.findByName(name).orElseThrow(() -> new RuntimeException("Card not found"));
     //     return card.getCardImage();
     // }
+
+    @GetMapping("/image/{id}")
+    public String getCardImage(@PathVariable Long id) {
+        Card card = cardRepository.findById(id).orElseThrow(() -> new RuntimeException("Card not found"));
+        return card.getCardImage();
+    }
 
     @PostMapping
     public List<Card> createCards(@RequestBody List<Card> cards) {
