@@ -5,7 +5,7 @@ export default function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [friendID, setFriendID] = useState("");
+  const [friendId, setFriendID] = useState("");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -13,13 +13,13 @@ export default function SignUp() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
   
-    console.log(friendID);
+    console.log(friendId);
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match");
       return;
     }
   
-    if (friendID.length !== 16) {
+    if (friendId.length !== 16) {
       setErrorMessage("Friend ID must be exactly 16 digits");
       return;
     }
@@ -34,7 +34,7 @@ export default function SignUp() {
           username,
           password,
           email,
-          friendID,
+          friendId,
         }),
       });
   
@@ -125,7 +125,7 @@ export default function SignUp() {
             <input 
               type="text" 
               className="form-control text-center" 
-              value={friendID}
+              value={friendId}
               onChange={(e) => {
                 // Only Numbers & Must be 16 digits long
                 const numericValue = e.target.value.replace(/\D/g, "").slice(0, 16);
@@ -136,7 +136,7 @@ export default function SignUp() {
               placeholder="Ex: XXXX-XXXX-XXXX-XXXX"
               required 
             />
-            {friendID.length > 0 && friendID.length < 16 && (
+            {friendId.length > 0 && friendId.length < 16 && (
               <small className="text-danger">Friend ID must be exactly 16 digits</small>
             )}
             <div className="signup-sublabel">Please enter numbers only without any hyphens.</div>
