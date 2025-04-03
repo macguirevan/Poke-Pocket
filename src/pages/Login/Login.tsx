@@ -1,12 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import Layout from "../../layout/Layout"
-
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -24,12 +26,20 @@ export default function Login() {
       
       if (data === "Login successful") {
         console.log("Login successful");
-        // Redirect user or store JWT token in localStorage/sessionStorage
+        setUsername("");
+        setPassword("");
+        setErrorMessage("");
+        setSuccessMessage("Login Successful! Redirecting...");
+        setTimeout(() => navigate("/"), 1000);
       } else {
         setErrorMessage(data);  // Show error message if login fails
       }
     } catch (error) {
       setErrorMessage("An error occurred during login");
+      setUsername("");
+      setPassword("");
+      setErrorMessage("");
+      setSuccessMessage("");
       console.error(error);
     }
   };
@@ -43,6 +53,16 @@ export default function Login() {
         </div>
         <div className="bg-white p-5 rounded shadow-lg w-50">
           <h2 className="text-center mb-4">Log In</h2>
+          {errorMessage && (
+            <div className="alert alert-danger text-center" role="alert">
+              {errorMessage}
+            </div>
+          )}
+          {successMessage && (
+            <div className="alert alert-success text-center" role="alert">
+              {successMessage}
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label">Username</label>

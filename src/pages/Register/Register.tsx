@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import Layout from "../../layout/Layout"
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
@@ -10,6 +11,7 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -46,13 +48,14 @@ export default function SignUp() {
   
       const data = await response.json();
       console.log("Success:", data);
-      setSuccessMessage("Account created successfully! You can now log in.");
       setUsername("");
       setPassword("");
       setConfirmPassword("");
       setEmail("");
       setFriendID("");
       setErrorMessage("");
+      setSuccessMessage("Account created successfully! Redirecting...");
+      setTimeout(() => navigate("/"), 1000);
     } catch (error : any) {
       console.error("Error:", error);
       setErrorMessage(error.message || "An error occurred. Please try again.");
@@ -117,7 +120,7 @@ export default function SignUp() {
               <input 
                 type="text" 
                 className="form-control text-center" 
-                value={friendID}
+                value={friendId}
                 onChange={(e) => {
                   // Only Numbers & Must be 16 digits long
                   const numericValue = e.target.value.replace(/\D/g, "").slice(0, 16);
@@ -128,7 +131,7 @@ export default function SignUp() {
                 placeholder="Ex: XXXX-XXXX-XXXX-XXXX"
                 required 
               />
-              {friendID.length > 0 && friendID.length < 16 && (
+              {friendId.length > 0 && friendId.length < 16 && (
                 <small className="text-danger">Friend ID must be exactly 16 digits</small>
               )}
               <div className="signup-sublabel">Please enter numbers only without any hyphens.</div>
