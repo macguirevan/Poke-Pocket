@@ -4,10 +4,32 @@ import { useState } from "react";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Logging in with:", { username, password });
+    try {
+      // Sending POST request to Spring Boot backend
+      const response = await fetch("http://localhost:8080/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.text(); // Get the response text
+      
+      if (data === "Login successful") {
+        console.log("Login successful");
+        // Redirect user or store JWT token in localStorage/sessionStorage
+      } else {
+        setErrorMessage(data);  // Show error message if login fails
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred during login");
+      console.error(error);
+    }
   };
 
   return (
@@ -18,6 +40,7 @@ export default function Login() {
       </div>
       <div className="bg-white p-5 rounded shadow-lg w-50">
         <h2 className="text-center mb-4">Log In</h2>
+        {errorMessage && <p className="text-danger text-center">{errorMessage}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Username</label>
