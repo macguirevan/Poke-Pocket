@@ -1,49 +1,77 @@
+import { useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Layout from "../../layout/Layout"
 
 export default function User() {
-  // Sample user data
-  const user = {
-    name: "John Doe",
-    email: "john@example.com",
-    bio: "Frontend developer passionate about creating user-friendly interfaces.",
-    avatar: "",
-    joined: "January 2023",
-    posts: 42,
-    followers: 1350
-  };
+  const { username } = useParams()
+  
+  // User data with dummy listings
+  const userData = {
+    username: username || "PokéMaster",
+    friendCode: "1234567891234567",
+    rating: "ratingID",
+    listings: [
+      {
+        id: 1,
+        title: "Heracross 1",
+        image: "https://pocket.pokemongohub.net/_next/image?url=%2Ftcg-pocket%2Fcards%2Fa2a%2Fwebp%2FcPK_10_004250_00_HERACROS_U_M_M_en_US.webp&w=828&q=75"
+      },
+      {
+        id: 2,
+        title: "Heracross 2",
+        image: "https://pocket.pokemongohub.net/_next/image?url=%2Ftcg-pocket%2Fcards%2Fa2a%2Fwebp%2FcPK_10_004250_00_HERACROS_U_M_M_en_US.webp&w=828&q=75"
+      },
+      {
+        id: 3,
+        title: "Heracross 3",
+        image: "https://pocket.pokemongohub.net/_next/image?url=%2Ftcg-pocket%2Fcards%2Fa2a%2Fwebp%2FcPK_10_004250_00_HERACROS_U_M_M_en_US.webp&w=828&q=75"
+      }
+    ]
+  }
 
   return (
     <Layout>
       <div style={styles.container}>
+        {/* Profile Header */}
         <section style={styles.profileSection}>
-          <div style={styles.avatarContainer}>
-            <img 
-              src={user.avatar} 
-              alt="User avatar" 
-              style={styles.avatar}
-            />
-          </div>
           <div style={styles.infoContainer}>
-            <h1 style={styles.name}>{user.name}</h1>
-            <p style={styles.email}>{user.email}</p>
-            <p style={styles.bio}>{user.bio}</p>
-            <div style={styles.stats}>
-              <p>Member since: {user.joined}</p>
-              <ul style={styles.statsList}>
-                <li style={styles.statItem}>{user.posts} Posts</li>
-                <li style={styles.statItem}>{user.followers} Followers</li>
-              </ul>
+            <h1 style={styles.name}>{userData.username}</h1>
+            <div style={styles.userMeta}>
+              <div style={styles.metaItem}>
+                <span style={styles.rating}>⭐ {userData.rating}</span>
+              </div>
             </div>
+            <div style={styles.metaItem}>
+                <span style={styles.metaLabel}>Friend Code:</span>
+                <span style={styles.friendCode}>{userData.friendCode}</span>
+              </div>
           </div>
         </section>
 
-        <section style={styles.actions}>
-          <button 
-            style={styles.button}
-            onClick={() => console.log('Edit profile clicked')}
-          >
-            Edit Profile
-          </button>
+        {/* Published Listings */}
+        <section style={styles.listingsSection}>
+          <h2 style={styles.sectionTitle}>Published Listings</h2>
+          <div style={styles.listingsGrid}>
+            {userData.listings.length > 0 ? (
+              userData.listings.map(listing => (
+                <Link 
+                  to={`/listing/${listing.id}`}
+                  key={listing.id}
+                  style={styles.listingCard}
+                >
+                  <h3 style={styles.listingTitle}>{listing.title}</h3>
+                  
+                  <img
+                    src={listing.image}
+                    alt={listing.title}
+                    style={styles.listingImage}
+                  />
+                </Link>
+              ))
+            ) : (
+              <p style={styles.noListings}>No published listings yet</p>
+            )}
+          </div>
         </section>
       </div>
     </Layout>
@@ -52,20 +80,19 @@ export default function User() {
 
 const styles = {
   container: {
-    maxWidth: '800px',
+    maxWidth: '1200px',
     margin: '0 auto',
     padding: '2rem',
-    backgroundColor: '#f5f5f5',
-    borderRadius: '8px'
   },
   profileSection: {
     display: 'flex',
     gap: '2rem',
     alignItems: 'center',
-    marginBottom: '2rem'
-  },
-  avatarContainer: {
-    flexShrink: 0
+    marginBottom: '2rem',
+    backgroundColor: '#fff',
+    padding: '2rem',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
   },
   avatar: {
     width: '150px',
@@ -73,53 +100,79 @@ const styles = {
     borderRadius: '50%',
     objectFit: 'cover'
   },
-  infoContainer: {
-    flexGrow: 1
-  },
-  name: {
-    fontSize: '2rem',
-    margin: '0 0 0.5rem 0',
-    color: '#333'
-  },
-  email: {
-    color: '#666',
-    margin: '0 0 1rem 0'
-  },
-  bio: {
-    lineHeight: '1.6',
-    marginBottom: '1rem'
-  },
-  stats: {
+  userMeta: {
     display: 'flex',
     gap: '2rem',
-    alignItems: 'center'
+    margin: '1rem 0'
   },
-  statsList: {
+  metaItem: {
     display: 'flex',
-    gap: '1rem',
-    listStyle: 'none',
-    padding: 0,
-    margin: 0
+    alignItems: 'center',
+    gap: '0.5rem'
   },
-  statItem: {
-    backgroundColor: '#e0e0e0',
-    padding: '0.5rem 1rem',
+  metaLabel: {
+    fontWeight: '600',
+    color: '#666'
+  },
+  rating: {
+    color: '#ff9800',
+    fontWeight: 'bold'
+  },
+  friendCode: {
+    fontFamily: 'monospace',
+    backgroundColor: '#f5f5f5',
+    padding: '0.2rem 0.5rem',
     borderRadius: '4px'
   },
-  actions: {
-    textAlign: 'center'
+  listingsSection: {
+    marginTop: '2rem',
+    backgroundColor: '#fff',
+    padding: '2rem',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
   },
-  button: {
-    padding: '0.8rem 1.5rem',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    transition: 'background-color 0.2s',
+  sectionTitle: {
+    marginBottom: '1.5rem',
+    color: '#333'
+  },
+  listingsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+    gap: '1.5rem'
+  },
+  listingCard: {
+    border: '1px solid #eee',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    textDecoration: 'none',
+    color: 'inherit',
+    transition: 'transform 0.2s',
     ':hover': {
-      backgroundColor: '#0056b3'
+      transform: 'translateY(-2px)'
     }
+  },
+  listingImage: {
+    width: '100%',
+    height: '200px',
+    objectFit: 'contain',
+    padding: '1rem',
+    backgroundColor: '#f8f8f8'
+  },
+  listingInfo: {
+    padding: '1rem'
+  },
+  listingTitle: {
+    margin: '0 0 0.5rem 0',
+    fontSize: '1rem'
+  },
+  listingId: {
+    color: '#666',
+    fontSize: '0.9rem',
+    margin: 0
+  },
+  noListings: {
+    color: '#666',
+    textAlign: 'center',
+    padding: '2rem'
   }
 }
