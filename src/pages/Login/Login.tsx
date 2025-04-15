@@ -26,6 +26,7 @@ export default function Login() {
       
       if (data === "Login successful") {
         console.log("Login successful");
+        localStorage.setItem('userId', username);
         setUsername("");
         setPassword("");
         setErrorMessage("");
