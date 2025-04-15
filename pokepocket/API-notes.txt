@@ -91,3 +91,6 @@ http://localhost:8080/api/cards/image/540
 
 getAllCards (GET) example: 
 http://localhost:8080/api/cards
+
+createCards (POST) example:
+http://localhost:8080/api/cards
