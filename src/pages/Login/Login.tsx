@@ -86,11 +86,7 @@ export default function Login() {
               />
             </div>
             <div className="d-grid">
-              {/* <button type="submit" className="btn btn-primary">Login</button> */}
-              <button className="btn btn-primary" onClick={() => {
-                localStorage.setItem('userId', 'user')
-                window.location.href = '/'
-              }}>Login Test</button>
+              <button type="submit" className="btn btn-primary">Login</button>
             </div>
           </form>
           <p className="mt-3 text-center">Don't have an account? <a href="/register">Sign Up</a></p>
