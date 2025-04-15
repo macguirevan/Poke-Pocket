@@ -6,11 +6,11 @@ import Avatar from './Avatar/Avatar'
 import styles from './Header.module.css'
 
 export default function Header() {
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('username') !== null);
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId') !== null);
 
   useEffect(() => {
     const handleStorageChange = () => {
-      setLoggedIn(localStorage.getItem('username') !== null);
+      setLoggedIn(localStorage.getItem('userId') !== null);
     }
     
     handleStorageChange();
@@ -21,7 +21,7 @@ export default function Header() {
     localStorage.setItem = function(key, value) {
       localStorageSetItem.apply(this, [key, value]);
 
-      if (key === 'username') {
+      if (key === 'userId') {
         window.dispatchEvent(new Event('localStorageChange'));
       }
     };

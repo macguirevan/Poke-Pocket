@@ -51,7 +51,7 @@ export default function Avatar() {
               <li>
                 <Link to="/login" onClick={() => {
                   toggleDrop()
-                  localStorage.removeItem('username');
+                  localStorage.removeItem('userId');
                 }}>
                   Logout
                 </Link>
