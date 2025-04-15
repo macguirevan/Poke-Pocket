@@ -8,6 +8,7 @@ export default function Avatar() {
   const [dropDown, setDropDown] = useState<boolean>(false);
   const menu = useRef<HTMLDivElement>(null);
   const menuBtn = useRef<HTMLDivElement>(null);
+  const userId = localStorage.getItem("userId");
 
   const toggleDrop = () => {
     setDropDown(!dropDown);
@@ -38,7 +39,7 @@ export default function Avatar() {
           <div className={styles.profileMenu} ref={menu}>
             <ul>
               <li>
-                <Link to="/user" onClick={() => toggleDrop()}>
+                <Link to={`/user/${userId}`} onClick={() => toggleDrop()}>
                   Profile
                 </Link>
               </li>
