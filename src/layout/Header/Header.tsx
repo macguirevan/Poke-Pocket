@@ -7,7 +7,6 @@ import styles from './Header.module.css'
 
 export default function Header() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId') !== null);
-  // const isLoggedIn = localStorage.getItem('userId') !== null;
 
   useEffect(() => {
     const handleStorageChange = () => {
