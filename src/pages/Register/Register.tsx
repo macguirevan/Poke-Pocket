@@ -71,6 +71,16 @@ export default function SignUp() {
         </div>
         <div className="bg-white p-5 rounded shadow-lg w-50">
           <h2 className="text-center mb-4">Create Your Account</h2>
+          {errorMessage && (
+            <div className="alert alert-danger text-center" role="alert">
+              {errorMessage}
+            </div>
+          )}
+          {successMessage && (
+            <div className="alert alert-success text-center" role="alert">
+              {successMessage}
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label">Username</label>

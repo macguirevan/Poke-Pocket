@@ -1,35 +1,46 @@
 // In Listing.jsx
-import { useParams, Link } from 'react-router-dom'
-import Layout from '../../layout/Layout'
-import './Listing.css'
+import { useParams, Link } from 'react-router-dom';
+import Layout from '../../layout/Layout';
+import './Listing.css';
 
-// Updated mock data with trade requests
-const mockListings = Array(20).fill().map((_, i) => ({
+export const mockListings = Array(20).fill().map((_, i) => ({
   id: i,
   title: `Heracross ${i}`,
   image: 'https://pocket.pokemongohub.net/_next/image?url=%2Ftcg-pocket%2Fcards%2Fa2a%2Fwebp%2FcPK_10_004250_00_HERACROS_U_M_M_en_US.webp&w=828&q=75',
-  requestedCards: Array(4).fill().map((_, j) => (i + j + 1) % 20) // Example requested card IDs
+  username: `Trainer${String.fromCharCode(65 + i)}`,
+  requestedCards: Array(4).fill().map((_, j) => (i + j + 1) % 20)
 }));
 
-// In Listing.jsx
 export default function Listing() {
-  const { id } = useParams()
-  const listing = mockListings.find(item => item.id === Number(id))
+  const { id } = useParams();
+  const listing = mockListings.find(item => item.id === Number(id));
 
   if (!listing) {
     return (
       <Layout>
         <div className="error">Listing not found</div>
       </Layout>
-    )
+    );
   }
+
+  // Process requested cards and group by user
+  const requestedCards = listing.requestedCards
+    .map(requestedId => mockListings.find(c => c.id === requestedId))
+    .filter(Boolean);
+
+  const groupedByUser = requestedCards.reduce((groups, card) => {
+    const username = card.username;
+    groups[username] = groups[username] || [];
+    groups[username].push(card);
+    return groups;
+  }, {});
 
   return (
     <Layout>
       <div className="listing-container">
-        {/* Left Side - Fixed Card Details */}
+        {/* Left Column */}
         <div className="left-column">
-        <h1>{listing.title}</h1>
+          <h1>{listing.title}</h1>
           <div className="card-detail">
             <img 
               src={listing.image} 
@@ -38,38 +49,47 @@ export default function Listing() {
             />
             <div className="detail-info">
               <p>Listing ID: {id}</p>
-              {/* Add more details here */}
+              <p>Card Description:</p>
             </div>
           </div>
         </div>
 
-        {/* Right Side - Scrollable Trade Section */}
+        {/* Right Column with grouped trades */}
         <div className="right-column">
           <div className="trade-section">
             <h2>Requested Trades</h2>
-            <div className="requested-cards-grid">
-              {listing.requestedCards.map((requestedId, index) => {
-                const requestedCard = mockListings.find(c => c.id === requestedId)
-                return requestedCard ? (
-                  <div key={index} className="trade-card">
-                    <Link to={`/listing/${requestedCard.id}`}>
-                      <img
-                        src={requestedCard.image}
-                        alt={requestedCard.title}
-                        className="trade-card-image"
-                      />
-                      <div className="trade-card-info">
-                        <h3>{requestedCard.title}</h3>
-                        <p>ID: {requestedCard.id}</p>
-                      </div>
-                    </Link>
+            <div className="user-trades-container">
+              {Object.entries(groupedByUser).map(([username, cards]) => (
+                <div className="user-trade-group" key={username}>
+                  <div className="user-header">
+                    <Link to={`/user/${username}`} className="username">{username}</Link>
+                    <span className="user-rating">⭐ ratingID</span>
                   </div>
-                ) : null
-              })}
+                  <div className="user-cards-grid">
+                    {cards.map((card) => (
+                      <Link 
+                        to={`/listing/${card.id}`} 
+                        className="trade-card"
+                        key={card.id}
+                      >
+                        <img
+                          src={card.image}
+                          alt={card.title}
+                          className="trade-card-image"
+                        />
+                        <div className="trade-card-info">
+                          <h3>{card.title}</h3>
+                          <p>ID: {card.id}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
     </Layout>
-  )
+  );
 }

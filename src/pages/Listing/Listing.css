@@ -104,3 +104,101 @@
       grid-template-columns: 1fr;
     }
   }
+
+/* User Trade Groups */
+.user-trades-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem 0;
+  }
+  
+  .user-trade-group {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+  }
+  
+  .user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .user-header .username {
+    font-weight: 600;
+    color: #2a2a2a;
+    font-size: 1.1rem;
+    text-decoration: none;
+  }
+  
+  .user-header .username:hover {
+    text-decoration: underline;
+  }
+  
+  .user-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  /* Updated Trade Card */
+  .trade-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .trade-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .trade-card-image {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    padding: 1rem;
+    background: #f5f5f5;
+  }
+  
+  .trade-card-info {
+    padding: 1rem;
+    background: white;
+  }
+  
+  .trade-card-info h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .trade-card-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .user-cards-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    .user-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    
+    .trade-card-info h3 {
+      font-size: 0.9rem;
+    }
+  }
