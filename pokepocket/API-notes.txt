@@ -45,6 +45,12 @@ http://localhost:8080/api/users/login
 getAllUsers (Get) example:
 http://localhost:8080/api/users
 
+getUserByUserId (Get) example:
+http://localhost:8080/api/users/userId/{userId}
+
+getUserByUsername (Get) example:
+http://localhost:8080/api/users/username/{username}
+
 ** Trade ** 
 
 createTrade (POST) example:

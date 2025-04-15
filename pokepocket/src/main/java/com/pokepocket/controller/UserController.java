@@ -52,6 +52,22 @@ public class UserController {
         }
     }
 
+    @GetMapping("/userId/{userId}")
+    public User getUserByUserId(@PathVariable Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with userId labeled " + userId));
+    }
+
+    @GetMapping("/username/{username}")
+    public User getUserByUsername(@PathVariable String username) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            return user;
+        } else {
+            throw new RuntimeException("User not found with username named " + username);
+        }
+    }
+
     @DeleteMapping("/{username}")
     public void deleteUser(@PathVariable String username) {
         userRepository.deleteByUsername(username);
