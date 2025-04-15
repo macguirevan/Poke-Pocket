@@ -42,9 +42,6 @@ export default function User() {
         
         if (matchedUser) {
           setUser(matchedUser);
-          console.log(matchedUser.userId);
-          console.log(matchedUser.email);
-          console.log(matchedUser.friendId);
         }
       }
       catch (error) {
