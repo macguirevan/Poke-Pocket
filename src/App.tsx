@@ -15,7 +15,7 @@ export default function App() {
       <Route path="/listing/:id" element={<Listing />} />
       
       {/* Single route pattern handles all usernames */}
-      <Route path="/user/:username" element={<User />} />
+      <Route path="/user/:userId" element={<User />} />
       
       {/* Existing /user route for current user's profile */}
       <Route path="/user" element={<User />} />

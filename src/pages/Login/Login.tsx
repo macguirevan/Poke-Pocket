@@ -26,13 +26,44 @@ export default function Login() {
       
       if (data === "Login successful") {
         console.log("Login successful");
-        localStorage.setItem('userId', username);
         setUsername("");
         setPassword("");
         setErrorMessage("");
         setSuccessMessage("Login Successful! Redirecting...");
+        
+        // Make API call to get Unique Generated User ID
+        try {
+          const response = await fetch("http://localhost:8080/api/users", {
+            method: "GET",
+            headers: {
+              "Accept": "application/json",
+            },
+          });
+      
+          if (!response.ok) {
+            throw new Error("Failed to fetch user ID");
+          }
+      
+          const users = await response.json() as { userId: number, friendId: string, username: string, password: string, email: string }[];; // Assuming backend returns JSON
+          const matchedUser = users.find(user => user.username === username);
+
+          if (matchedUser) {
+            localStorage.setItem("userId", matchedUser.userId.toString());
+            console.log("Stored User ID in LocalStorage:", matchedUser.userId);
+          } else {
+            console.error("User not found");
+          }
+      
+        } catch (error) {
+          console.error("Error fetching user ID:", error);
+        }
+        
         setTimeout(() => navigate("/"), 1000);
       } else {
+        /* TODO: 
+          Make a get request to the database and find even it exists in database, username or password
+          Set the error message based on that 
+        */
         setErrorMessage(data);  // Show error message if login fails
       }
     } catch (error) {

@@ -1,15 +1,62 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import Layout from "../../layout/Layout"
 
 export default function User() {
-  const { username } = useParams()
+  const { userId } = useParams();
   
+  const [user, setUser] = useState<{
+    userId: number;
+    friendId: string;
+    username: string;
+    password: string;
+    email: string;
+    rating: string | null;
+  } | null>(null);
+  
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const response = await fetch("http://localhost:8080/api/users", {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const users = await response.json() as {
+          userId: number;
+          friendId: string;
+          username: string;
+          password: string;
+          email: string;
+          rating: string | null;
+        }[];
+        
+        const matchedUser = users.find(user => user.userId === Number(userId));
+        
+        if (matchedUser) {
+          setUser(matchedUser);
+        }
+      }
+      catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    }
+
+    fetchUserData();
+  }, [userId]);
+
   // User data with dummy listings
   const userData = {
-    username: username || "PokéMaster",
-    friendCode: "1234567891234567",
-    rating: "ratingID",
+    username: user?.username,
+    friendCode: user?.friendId,
+    rating: user?.rating,
     listings: [
       {
         id: 1,

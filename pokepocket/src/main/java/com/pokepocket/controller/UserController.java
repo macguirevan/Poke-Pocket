@@ -37,13 +37,6 @@ public class UserController {
     return userRepository.findByUsername(username)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
-
-    // User user = userRepository.findByUsername(username);
-    // if (user != null) {
-    //   return user;
-    // } else {
-    //   throw new RuntimeException("User not found with username named " + username);
-    // }
   }
 
   @GetMapping("/friend/{friendId}")

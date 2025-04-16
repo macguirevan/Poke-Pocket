@@ -57,6 +57,10 @@ export default function SignUp() {
       setSuccessMessage("Account created successfully! Redirecting...");
       setTimeout(() => navigate("/"), 1000);
     } catch (error : any) {
+      /* TODO: 
+          Make a get request to the database and find what is the duplicate of, Username/Email/FriendID
+          Set the error message based on that 
+      */
       console.error("Error:", error);
       setErrorMessage(error.message || "An error occurred. Please try again.");
     }
