@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TradeRequest {
+  private Integer tradeId;
   private String username;
   private Integer offeredCardId;
   private Integer requestedCard1Id;
