@@ -68,6 +68,26 @@ public class UserController {
         }
     }
 
+    @GetMapping("/email/{email}")
+    public User getUserByEmail(@PathVariable String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return user;
+        } else {
+            throw new RuntimeException("User not found with email named " + email);
+        }
+    }
+
+    @GetMapping("/friendId/{friendId}")
+    public User getUserByFriendId(@PathVariable String friendId) {
+        User user = userRepository.findByFriendId(friendId);
+        if (user != null) {
+            return user;
+        } else {
+            throw new RuntimeException("User not found with friend ID labeled " + friendId);
+        }
+    }
+
     @DeleteMapping("/{username}")
     public void deleteUser(@PathVariable String username) {
         userRepository.deleteByUsername(username);
