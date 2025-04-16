@@ -31,7 +31,7 @@ public class Trade {
   private Card offeredCard;
 
   @ManyToOne
-  @JoinColumn(name = "requested_1", referencedColumnName = "card_id")
+  @JoinColumn(name = "requested_1", referencedColumnName = "card_id", nullable = false)
   private Card requestedCard1;
 
   @ManyToOne
