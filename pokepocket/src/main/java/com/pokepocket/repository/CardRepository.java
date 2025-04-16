@@ -10,8 +10,8 @@ import com.pokepocket.model.Card;
 @Repository
 public interface CardRepository extends JpaRepository<Card, Integer>{
   Optional<Card> findByCardId(Integer cardId);
-  
-  List<Card> findByName(String name);
+
+  List<Card> findByNameContainingIgnoreCase(String name);
   
   List<Card> findBySetName(String setName);
   
