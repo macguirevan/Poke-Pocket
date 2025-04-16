@@ -1,11 +1,22 @@
 package com.pokepocket.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.pokepocket.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUsername(String username);
+import java.util.Optional;
 
-    void deleteByUsername(String username);
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer> {
+  Optional<User> findByFriendId(String friendId);
+  
+  Optional<User> findByUsername(String username);
+
+  Optional<User> findByEmail(String email);
+  
+  boolean existsByUsername(String username);
+  
+  boolean existsByEmail(String email);
+  
+  boolean existsByFriendId(String friendId);
 }

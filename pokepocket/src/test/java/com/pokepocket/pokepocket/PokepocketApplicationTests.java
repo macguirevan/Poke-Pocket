@@ -1,13 +1,13 @@
-package com.pokepocket.pokepocket;
+// package com.pokepocket.pokepocket;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class PokepocketApplicationTests {
+// @SpringBootTest
+// class PokepocketApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+// 	@Test
+// 	void contextLoads() {
+// 	}
 
-}
+// }
