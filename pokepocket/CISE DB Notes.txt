@@ -1,0 +1,19 @@
+Before Starting:
+cd pokepocket
+
+### Setup ###
+
+1. Run the commands in order:
+chmod +x setup-secrets.sh
+./setup-secrets.sh
+
+2. Send the file secrets/ssh_key.pub on discord
+
+
+### Run the Backend and Database ###
+
+1. Run the command after making changes to the backend:
+docker-compose build app
+
+2. Run the command to set up DB connection and backend:
+docker-compose up
