@@ -1,138 +1,138 @@
-// package com.pokepocket.controller;
+package com.pokepocket.controller;
 
-// import java.util.List;
+import java.util.List;
+import java.util.Optional;
 
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.DeleteMapping;
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.PatchMapping;
-// import org.springframework.web.bind.annotation.PathVariable;
-// import org.springframework.web.bind.annotation.PostMapping;
-// import org.springframework.web.bind.annotation.RequestBody;
-// import org.springframework.web.bind.annotation.RequestMapping;
-// import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// import com.pokepocket.model.Card;
-// import com.pokepocket.model.Trade;
-// import com.pokepocket.model.TradeRequest;
-// import com.pokepocket.model.User;
-// import com.pokepocket.repository.CardRepository;
-// import com.pokepocket.repository.TradeRepository;
-// import com.pokepocket.repository.UserRepository;
+import com.pokepocket.model.Card;
+import com.pokepocket.model.Trade;
+import com.pokepocket.model.TradeRequest;
+import com.pokepocket.model.User;
+import com.pokepocket.repository.CardRepository;
+import com.pokepocket.repository.TradeRepository;
+import com.pokepocket.repository.UserRepository;
 
-// @RestController
-// @RequestMapping("/api/trades")
-// public class TradeController {
-//     private final TradeRepository tradeRepository;
-//     private final CardRepository cardRepository;
-//     private final UserRepository userRepository;
+@RestController
+@RequestMapping("/api/trades")
+public class TradeController {
 
-//     public TradeController(TradeRepository tradeRepository, CardRepository cardRepository, UserRepository userRepository) {
-//         this.tradeRepository = tradeRepository;
-//         this.cardRepository = cardRepository;
-//         this.userRepository = userRepository;
-//     }
+  private final TradeRepository tradeRepository;
+  private final CardRepository cardRepository;
+  private final UserRepository userRepository;
 
-//     @GetMapping
-//     public List<Trade> getAllTrades() {
-//         return tradeRepository.findAll();
-//     }
+  public TradeController(TradeRepository tradeRepository, CardRepository cardRepository, UserRepository userRepository) {
+    this.tradeRepository = tradeRepository;
+    this.cardRepository = cardRepository;
+    this.userRepository = userRepository;
+  }
 
-//     // Get the contents of a specific trade
-//     @GetMapping("/{tradeId}")
-//     public Trade getTradeById(@PathVariable Long tradeId) {
-//         return tradeRepository.findById(tradeId)
-//                 .orElseThrow(() -> new RuntimeException("Trade not found."));
-//     }
+  @GetMapping
+  public List<Trade> getAllTrades() {
+    return tradeRepository.findAll();
+  }
 
-//     // Get all trades by a user. 
-//     @GetMapping("/users/{userId}")
-//     public List<Trade> getTradesByUserId(@PathVariable Long userId) {
-//         return tradeRepository.findByUser_UserId(userId);
-//     }
+  @GetMapping("/{tradeId}")
+  public ResponseEntity<?> getTradeById(@PathVariable Integer tradeId) {
+    return tradeRepository.findById(tradeId)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+  }
 
-//     @PostMapping
-//     public ResponseEntity<?> createTrade(@RequestBody TradeRequest tradeRequest) {
-        
-//         // Find user by username
-//         User user = userRepository.findByUsername(tradeRequest.getUsername());
-//         if (user == null) {
-//             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
-//         }
-    
-//         // Find offered card
-//         Card offeredCard = cardRepository.findByCardId(tradeRequest.getOfferedCardId());
-//         if (offeredCard == null) {
-//             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Offered card not found");
-//         }
-    
-//         // Find requested card 1
-//         Card requestedCard1 = cardRepository.findByCardId(tradeRequest.getRequestedCard1Id());
-//         if (requestedCard1 == null) {
-//             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested card not found");
-//         }
-    
-//         // Create trade object and set properties
-//         Trade trade = new Trade();
-//         trade.setUser(user);
-//         trade.setOfferedCard(offeredCard);
-//         trade.setRequestedCard1(requestedCard1);
-    
-//         // Optional requested cards (2, 3, 4)
-//         if (tradeRequest.getRequestedCard2Id() != null) {
-//             Card requestedCard2 = cardRepository.findByCardId(tradeRequest.getRequestedCard2Id());
-//             if (requestedCard2 != null) {
-//                 trade.setRequestedCard2(requestedCard2);
-//             } else {
-//                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested card 2 not found");
-//             }
-//         }
-    
-//         if (tradeRequest.getRequestedCard3Id() != null) {
-//             Card requestedCard3 = cardRepository.findByCardId(tradeRequest.getRequestedCard3Id());
-//             if (requestedCard3 != null) {
-//                 trade.setRequestedCard3(requestedCard3);
-//             } else {
-//                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested card 3 not found");
-//             }
-//         }
-    
-//         if (tradeRequest.getRequestedCard4Id() != null) {
-//             Card requestedCard4 = cardRepository.findByCardId(tradeRequest.getRequestedCard4Id());
-//             if (requestedCard4 != null) {
-//                 trade.setRequestedCard4(requestedCard4);
-//             } else {
-//                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested card 4 not found");
-//             }
-//         }
-    
-//         // Save the trade
-//         Trade savedTrade = tradeRepository.save(trade);
-//         return ResponseEntity.ok(savedTrade);
-//     }
+  @GetMapping("/users/{userId}")
+  public List<Trade> getTradesByUserId(@PathVariable Integer userId) {
+    return tradeRepository.findByUser_UserId(userId);
+  }
 
-//     @DeleteMapping("/{tradeId}")
-//     public void deleteTrade(@PathVariable Long tradeId) {
-//         tradeRepository.deleteById(tradeId);
-//     }
+  @GetMapping("/username/{username}")
+  public List<Trade> getTradesByUsername(@PathVariable String username) {
+    return tradeRepository.findByUser_Username(username);
+  }
 
-//     @PatchMapping("/{tradeId}/{slotNum}/{cardId}")
-//     public Trade updateRequestedCard(@PathVariable Long tradeId, @PathVariable int slotNum, @PathVariable Long cardId) {
-//         Trade trade = tradeRepository.findById(tradeId)
-//                 .orElseThrow(() -> new RuntimeException("Trade not found."));
+  @PostMapping
+  public ResponseEntity<?> createTrade(@RequestBody TradeRequest tradeRequest) {
 
-//         Card newCard = cardRepository.findById(cardId)
-//                 .orElseThrow(() -> new RuntimeException("Card not found."));
+    Optional<User> userOpt = userRepository.findByUsername(tradeRequest.getUsername());
+    if (userOpt.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found.");
+    }
 
-//         switch(slotNum) {
-//             case 1 -> trade.setRequestedCard1(newCard);
-//             case 2 -> trade.setRequestedCard2(newCard);
-//             case 3 -> trade.setRequestedCard3(newCard);
-//             case 4 -> trade.setRequestedCard4(newCard);
-//             default -> trade.setRequestedCard1(newCard);
-//         }
-        
-//         return tradeRepository.save(trade);
-//     }
-// }
+    Optional<Card> offeredCardOpt = cardRepository.findById(tradeRequest.getOfferedCardId());
+    if (offeredCardOpt.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Offered card not found.");
+    }
+
+    Optional<Card> requestedCard1Opt = cardRepository.findById(tradeRequest.getRequestedCard1Id());
+    if (requestedCard1Opt.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested card not found.");
+    }
+
+    Trade trade = new Trade();
+    trade.setUser(userOpt.get());
+    trade.setOfferedCard(offeredCardOpt.get());
+    trade.setRequestedCard1(requestedCard1Opt.get());
+
+    if (tradeRequest.getRequestedCard2Id() != null) {
+      Optional<Card> card2Opt = cardRepository.findById(tradeRequest.getRequestedCard2Id());
+      if (card2Opt.isPresent()) trade.setRequestedCard2(card2Opt.get());
+      else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested card 2 not found.");
+    }
+
+    if (tradeRequest.getRequestedCard3Id() != null) {
+      Optional<Card> card3Opt = cardRepository.findById(tradeRequest.getRequestedCard3Id());
+      if (card3Opt.isPresent()) trade.setRequestedCard3(card3Opt.get());
+      else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested card 3 not found.");
+    }
+
+    if (tradeRequest.getRequestedCard4Id() != null) {
+      Optional<Card> card4Opt = cardRepository.findById(tradeRequest.getRequestedCard4Id());
+      if (card4Opt.isPresent()) trade.setRequestedCard4(card4Opt.get());
+      else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested card 4 not found.");
+    }
+
+    Trade savedTrade = tradeRepository.save(trade);
+    return ResponseEntity.ok(savedTrade);
+  }
+
+  @DeleteMapping("/{tradeId}")
+  public ResponseEntity<?> deleteTrade(@PathVariable Integer tradeId) {
+    if (!tradeRepository.existsById(tradeId)) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trade not found.");
+    }
+    tradeRepository.deleteById(tradeId);
+    return ResponseEntity.ok("Trade deleted.");
+  }
+
+  @PatchMapping("/{tradeId}/{slotNum}/{cardId}")
+  public ResponseEntity<?> updateRequestedCard(
+          @PathVariable Integer tradeId,
+          @PathVariable int slotNum,
+          @PathVariable Integer cardId) {
+
+    Optional<Trade> tradeOpt = tradeRepository.findById(tradeId);
+    if (tradeOpt.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trade not found.");
+    }
+
+    Optional<Card> cardOpt = cardRepository.findById(cardId);
+    if (cardOpt.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Card not found.");
+    }
+
+    Trade trade = tradeOpt.get();
+    Card newCard = cardOpt.get();
+
+    switch (slotNum) {
+      case 1 -> trade.setRequestedCard1(newCard);
+      case 2 -> trade.setRequestedCard2(newCard);
+      case 3 -> trade.setRequestedCard3(newCard);
+      case 4 -> trade.setRequestedCard4(newCard);
+      default -> trade.setRequestedCard1(newCard);  // Optional: maybe reject bad slot numbers
+    }
+
+    Trade updatedTrade = tradeRepository.save(trade);
+    return ResponseEntity.ok(updatedTrade);
+  }
+}
