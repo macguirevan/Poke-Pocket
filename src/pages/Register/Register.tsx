@@ -43,7 +43,8 @@ export default function SignUp() {
   
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(errorText || "Failed to create account");
+        const errorJson = JSON.parse(errorText);
+        throw errorJson;
       }
   
       const data = await response.json();
@@ -57,12 +58,8 @@ export default function SignUp() {
       setSuccessMessage("Account created successfully! Redirecting...");
       setTimeout(() => navigate("/"), 1000);
     } catch (error : any) {
-      /* TODO: 
-          Make a get request to the database and find what is the duplicate of, Username/Email/FriendID
-          Set the error message based on that 
-      */
       console.error("Error:", error);
-      setErrorMessage(error.message || "An error occurred. Please try again.");
+      setErrorMessage(error.detail || "An error occurred. Please try again.");
     }
   };
 
