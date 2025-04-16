@@ -1,0 +1,76 @@
+/* Register page specific styles */
+.container-fluid.min-vh-100 {
+    background: #f8f9fa;
+    padding: 2rem;
+  }
+  
+  .bg-white.rounded {
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+    border-radius: 12px !important;
+  }
+  
+  .btn-primary {
+    background-color: #52F4BC !important;
+    border-color: #52F4BC !important;
+    color: #2d3748 !important;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #3fe2ab !important;
+    border-color: #3fe2ab !important;
+  }
+  
+  .form-control {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    padding: 0.75rem 1rem !important;
+  }
+  
+  .form-control:focus {
+    border-color: #52F4BC !important;
+    box-shadow: 0 0 0 2px rgba(82, 244, 188, 0.1) !important;
+  }
+  
+  .alert {
+    border-radius: 6px !important;
+    padding: 1rem !important;
+  }
+  
+  .text-danger {
+    color: #e53e3e !important;
+  }
+  
+  .signup-sublabel {
+    color: #718096;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+  
+  .text-center a {
+    color: #52F4BC !important;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .text-center a:hover {
+    color: #3fe2ab !important;
+  }
+  
+  @media (max-width: 768px) {
+    .bg-white.rounded {
+      width: 90% !important;
+      padding: 1.5rem !important;
+    }
+    
+    h1.my-3 {
+      font-size: 2rem !important;
+    }
+    
+    .text-center p {
+      font-size: 0.9rem !important;
+    }
+  }
