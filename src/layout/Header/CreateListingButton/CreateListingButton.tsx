@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import styles from '../Header.module.css';
 
 export default function CreateListingButton() {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ export default function CreateListingButton() {
   };
 
   return (
-    <button className="btn btn-primary" onClick={handleClick}>
+    <button className={styles.createListingButton} onClick={handleClick}>
       Create Listing
     </button>
   );
