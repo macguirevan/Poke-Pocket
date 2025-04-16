@@ -1,10 +1,14 @@
 package com.pokepocket.model;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity //Turns this into a database table
 @Table(name = "users")
@@ -30,4 +34,8 @@ public class User {
 
   @Column(name = "password")
   private String password;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
+  private List<Trade> trades;
 }
