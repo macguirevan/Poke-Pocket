@@ -35,10 +35,10 @@ public class CardController {
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
   }
-  
+
   @GetMapping("/name/{name}")
   public ResponseEntity<List<Card>> getCardsByName(@PathVariable String name) {
-    List<Card> cards = cardRepository.findByName(name);
+    List<Card> cards = cardRepository.findByNameContainingIgnoreCase(name);
     return cards.isEmpty()
             ? ResponseEntity.notFound().build()
             : ResponseEntity.ok(cards);

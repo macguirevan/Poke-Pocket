@@ -69,12 +69,16 @@ public class GlobalExceptionHandler {
         StringBuilder result = new StringBuilder();
         String[] words = columnName.split("_");
         
-        result.append(words[0].toLowerCase());
-        result.append(words[1].toLowerCase());
+        result.append(words[0].substring(0, 1).toUpperCase()).append(words[0].substring(1).toLowerCase());
+        if (words[1].equals("id")) {
+          result.append(" ID");
+        } else {
+          result.append(words[1].toLowerCase());
+        }
         
         return result.toString();
       }
-      return columnName.toLowerCase();
+      return columnName.substring(0, 1).toUpperCase() + columnName.substring(1).toLowerCase();
     }
     return keyName;
   }

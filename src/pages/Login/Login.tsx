@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import Layout from "../../layout/Layout"
 import { useNavigate } from "react-router-dom";
+import "./login.css";
 
 export default function Login() {
   const [username, setUsername] = useState("");
