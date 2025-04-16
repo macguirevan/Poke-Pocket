@@ -13,3 +13,5 @@ echo "cat secrets/ssh_key.pub"
 
 echo "DB_USERNAME=dfranco1" > .env
 echo "DB_PASSWORD=dfrancoms1234" >> .env
+
+dos2unix docker-entrypoint.sh
