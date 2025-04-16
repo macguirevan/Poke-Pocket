@@ -18,23 +18,23 @@ import lombok.Setter;
 @NoArgsConstructor 
 @AllArgsConstructor
 public class Card {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cardId;
-
-    @Column(nullable = false)
-    private String name;
-
-    // Store the URL of the image in here
-    @Column(nullable = false, unique = true)
-    private String cardImage;
-
-    // Rarity has a value of int because it makes comparisons faster
-    @Column(nullable = false)
-    private String rarity;
-
-    @Column(nullable = false)
-    private String setName;
+  
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "card_id")
+  private Integer cardId;
+  
+  @Column(name = "name", nullable = false)
+  private String name;
+  
+  // Store the URL of the image in here
+  @Column(name = "card_image", nullable = false, unique = true)
+  private String cardImage;
+  
+  // Rarity has a value of int because it makes comparisons faster
+  @Column(name = "rarity", nullable = false)
+  private Integer rarity;
+  
+  @Column(name = "set_name", nullable = false)
+  private String setName;
 }
-

@@ -3,93 +3,95 @@ package com.pokepocket.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import com.pokepocket.model.User;
 import com.pokepocket.repository.UserRepository;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/users")
 public class UserController {
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  public UserController(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+  @GetMapping
+  public List<User> getAllUsers() {
+    return userRepository.findAll();
+  }
 
-    @PostMapping
-    public User register(@RequestBody User user) {
-        return userRepository.save(user);
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<User> getUserById(@PathVariable Integer id) {
+    return userRepository.findById(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+  }
 
-    @PostMapping("/login")
-    public String login(@RequestBody Map<String, String> loginData) {
+  @GetMapping("/username/{username}")
+  public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+    return userRepository.findByUsername(username)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+  }
 
-        // Parse login information
-        String username = loginData.get("username");
-        String password = loginData.get("password");
+  @GetMapping("/friend/{friendId}")
+  public ResponseEntity<User> getUserByFriendId(@PathVariable String friendId) {
+    return userRepository.findByFriendId(friendId)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+  }
 
-        User user = userRepository.findByUsername(username);
+  @GetMapping("/email/{email}")
+  public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+    return userRepository.findByEmail(email)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+  }
 
-        // Check if user exists and if password matches
-        if (user != null && user.getPassword().equals(password)) {
-            return "Login successful"; // Optionally return JWT token or user details
-        } else {
-            return "Invalid username or password";
-        }
-    }
+  @PostMapping
+  public ResponseEntity<User> register(@RequestBody User user) {
+    User savedUser = userRepository.save(user);
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+  }
 
-    @GetMapping("/userId/{userId}")
-    public User getUserByUserId(@PathVariable Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with userId labeled " + userId));
-    }
+  @PostMapping("/login")
+  public ResponseEntity<?> login(@RequestBody Map<String, String> loginData) {
+    // Parse login information
+    String username = loginData.get("username");
+    String password = loginData.get("password");
 
-    @GetMapping("/username/{username}")
-    public User getUserByUsername(@PathVariable String username) {
-        User user = userRepository.findByUsername(username);
-        if (user != null) {
-            return user;
-        } else {
-            throw new RuntimeException("User not found with username named " + username);
-        }
-    }
+    return userRepository.findByUsername(username)
+            .filter(user -> user.getPassword().equals(password))
+            .map(user -> {
+                Map<String, Object> response = Map.of(
+                    "status", "success",
+                    "message", "Login successful",
+                    "userId", user.getUserId()
+                );
+                return ResponseEntity.ok(response);
+            })
+            .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                    "status", "error",
+                    "message", "Invalid username or password"
+                )));
+  }
 
-    @GetMapping("/email/{email}")
-    public User getUserByEmail(@PathVariable String email) {
-        User user = userRepository.findByEmail(email);
-        if (user != null) {
-            return user;
-        } else {
-            throw new RuntimeException("User not found with email named " + email);
-        }
-    }
-
-    @GetMapping("/friendId/{friendId}")
-    public User getUserByFriendId(@PathVariable String friendId) {
-        User user = userRepository.findByFriendId(friendId);
-        if (user != null) {
-            return user;
-        } else {
-            throw new RuntimeException("User not found with friend ID labeled " + friendId);
-        }
-    }
-
-    @DeleteMapping("/{username}")
-    public void deleteUser(@PathVariable String username) {
-        userRepository.deleteByUsername(username);
-    }
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
+    return userRepository.findById(id)
+            .map(user -> {
+                userRepository.deleteById(id);
+                return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "User deleted successfully"
+                ));
+            })
+            .orElse(ResponseEntity.notFound().build());
+  }
 }

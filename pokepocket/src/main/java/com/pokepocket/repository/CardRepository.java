@@ -1,12 +1,19 @@
 package com.pokepocket.repository;
 
 import java.util.Optional;
-
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.pokepocket.model.Card;
 
-public interface CardRepository extends JpaRepository<Card, Long>{
-    Card findByCardId(Long cardId);
-    Optional<Card> findByName(String name);
+@Repository
+public interface CardRepository extends JpaRepository<Card, Integer>{
+  Optional<Card> findByCardId(Integer cardId);
+  
+  List<Card> findByName(String name);
+  
+  List<Card> findBySetName(String setName);
+  
+  List<Card> findByRarity(Integer rarity);
 }
