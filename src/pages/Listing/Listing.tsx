@@ -14,6 +14,7 @@ interface Card {
 interface Trade {
   tradeId: number;
   username: string;
+  userId: number; // Added userId field
   offeredCard: Card;
   requestedCard1: Card | null;
   requestedCard2: Card | null;
@@ -102,7 +103,7 @@ export default function Listing() {
                   <div key={trade.tradeId} className="trade-listing">
                     <div className="trade-header">
                       <h3>
-                        <Link to={`/user/${$username}`}>
+                        <Link to={`/user/${trade.userId}`}>
                           {$username}
                         </Link>
                       </h3>
