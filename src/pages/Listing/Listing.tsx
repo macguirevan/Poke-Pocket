@@ -131,7 +131,7 @@ export default function Listing() {
                 return (
                   <div key={trade.tradeId} className="trade-listing">
                     <div className="trade-header">
-                      <h3>
+                      <h3 className="usernameOfLister">
                         {userId ? (
                           <Link to={`/user/${userId}`}>
                             {$username}
