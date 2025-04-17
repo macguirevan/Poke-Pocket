@@ -55,10 +55,6 @@ public class TradeController {
   @PostMapping
   public ResponseEntity<?> createTrade(@RequestBody TradeRequest tradeRequest) {
 
-    if (tradeRequest.getTradeId() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Trade ID is required.");
-    }
-
     Optional<User> userOpt = userRepository.findByUsername(tradeRequest.getUsername());
     if (userOpt.isEmpty()) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found.");
@@ -74,14 +70,8 @@ public class TradeController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested card 1 is required and was not found.");
     }
 
-    // Check if tradeId already exists
-    if (tradeRepository.existsById(tradeRequest.getTradeId())) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body("Trade ID already exists.");
-    }
-
     // Create and populate Trade object
     Trade trade = new Trade();
-    trade.setTradeId(tradeRequest.getTradeId());
     trade.setUser(userOpt.get());
     trade.setOfferedCard(offeredCardOpt.get());
     trade.setRequestedCard1(requestedCard1Opt.get());
