@@ -1,0 +1,11 @@
+# Use Alpine Linux as base
+FROM alpine:latest
+
+# Install SSH client and netcat (for testing connectivity)
+RUN apk add --no-cache openssh-client netcat-openbsd
+
+# Set SSH keys and config from the host system
+VOLUME /root/.ssh
+
+# Start SSH tunnel
+CMD ssh -o StrictHostKeyChecking=no -N -L 0.0.0.0:3307:mysql.cise.ufl.edu:3306 dfranco1@rain.cise.ufl.edu
