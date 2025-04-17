@@ -142,6 +142,7 @@ export default function Listing() {
                           </Link>
                         )}
                       </h3>
+                      <h4>Asking For:</h4>
                       <span className="badge bg-secondary">
                         {requestedCards.length} cards requested
                       </span>
