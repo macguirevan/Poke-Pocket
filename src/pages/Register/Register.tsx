@@ -29,7 +29,7 @@ export default function SignUp() {
     }
   
     try {
-      const response = await fetch("http://localhost:8080/api/users", {
+      const response = await fetch("http://54.175.234.211:8080/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export default function SignUp() {
   
       // Make API request to fetch the userId based on the username that was posted
       try {
-        const response = await fetch(`http://localhost:8080/api/users/username/${username}`, {
+        const response = await fetch(`http://54.175.234.211:8080/api/users/username/${username}`, {
           method: "GET",
           headers: {
             "Accept": "application/json",

@@ -44,7 +44,7 @@ export default function User() {
       try {
         setLoading(true);
         // Direct fetch for the specific user by userId
-        const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
+        const response = await fetch(`http://54.175.234.211:8080/api/users/${userId}`, {
           method: "GET",
           headers: {
             "Accept": "application/json",
@@ -81,7 +81,7 @@ export default function User() {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/api/trades/${tradeId}`, {
+      const response = await fetch(`http://54.175.234.211:8080/api/trades/${tradeId}`, {
         method: 'DELETE',
       });
 

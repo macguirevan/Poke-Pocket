@@ -28,3 +28,29 @@ show tables;
 DESCRIBE cards;
 SELECT COUNT(*) FROM cards;
 DESCRIBE `trade-listings`;
+
+ssh -i pokepocket-kp.pem ec2-user@54.211.45.249
+
+sudo docker ps
+
+mvn clean package
+docker buildx build --platform linux/amd64 -t matthewjung14/pokepocket:1.1 .
+docker push matthewjung14/pokepocket:1.1
+sudo docker pull matthewjung14/pokepocket:1.1
+sudo docker run -d -p 80:8080 matthewjung14/pokepocket:1.1
+
+
+sudo mysql
+SELECT user, host, plugin FROM mysql.user;
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');
+SET PASSWORD FOR 'root'@'localhost' = 'root';
+FLUSH PRIVILEGES;
+EXIT;
+mysql -u root -p -h localhost
+
+
+S3 commands
+aws s3 sync dist/ s3://pokepocketbucket
+npm run build
+aws s3 sync dist/ s3://pokepocketbucket --delete
+http://pokepocketbucket.s3-website-us-east-1.amazonaws.com/
