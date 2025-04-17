@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
 import Home from './pages/Home/Home'
 import Listing from './pages/Listing/Listing'
 import User from './pages/User/User'

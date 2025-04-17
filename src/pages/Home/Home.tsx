@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from '../../layout/Layout';
 import './Home.css';
 
-const mockListings = Array(20).fill().map((_, i) => ({
+const mockListings = Array(20).fill(null).map((_, i) => ({
   id: i + 1,
   title: `Heracross ${i + 1}`,
   image: 'https://pocket.pokemongohub.net/_next/image?url=%2Ftcg-pocket%2Fcards%2Fa2a%2Fwebp%2FcPK_10_004250_00_HERACROS_U_M_M_en_US.webp&w=828&q=75'
