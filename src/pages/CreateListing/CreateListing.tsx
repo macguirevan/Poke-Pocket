@@ -173,7 +173,7 @@ export default function CreateListing() {
           {/* Expecting Section */}
           <div className="card mb-4">
             <div className="card-body d-flex flex-column">
-              <h5 className="card-title">Cards You're Expecting (max 4)</h5>
+              <h5 className="card-title">Cards You Want (Up to 4)</h5>
               <div className="selected-cards-container mb-3">
                 {selectedExpecting.map((card) => (
                   <div key={card.cardId} className="selected-expecting-card">
