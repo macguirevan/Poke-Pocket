@@ -83,3 +83,7 @@
   font-size: 0.9rem;
   color: #666;
 }
+
+.usernameOfLister:hover{
+  scale: 1.05;
+}

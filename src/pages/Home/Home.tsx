@@ -1,49 +1,7 @@
-import { useRef, useEffect, useState } from 'react';
-import { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../../layout/Layout';
 import './Home.css';
-
-const HorizontalScroll = ({ children }: { children: ReactNode }) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const scrollAmount = 400;
-
-  const handleScroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const currentScroll = scrollRef.current.scrollLeft;
-      const newScroll = direction === 'left' 
-        ? currentScroll - scrollAmount 
-        : currentScroll + scrollAmount;
-      
-      scrollRef.current.scrollTo({
-        left: newScroll,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  return (
-    <div className="scroll-wrapper">
-      <button 
-        className="scroll-arrow left" 
-        onClick={() => handleScroll('left')}
-      >
-        &lt;
-      </button>
-      
-      <div className="cards-scroll-container" ref={scrollRef}>
-        {children}
-      </div>
-
-      <button 
-        className="scroll-arrow right" 
-        onClick={() => handleScroll('right')}
-      >
-        &gt;
-      </button>
-    </div>
-  );
-};
 
 interface Card {
   cardId: number;
@@ -64,7 +22,7 @@ interface Listing {
 
 export default function Home() {
   const [listings, setListings] = useState<Listing[]>([]);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -85,16 +43,16 @@ export default function Home() {
 
   // Get unique cards (no duplicates)
   const getUniqueCards = () => {
-    const seenCards = new Set<number>();
+    const seenCards = new Set();
     const uniqueCards: Card[] = [];
-    
+   
     listings.forEach(listing => {
       if (!seenCards.has(listing.offeredCard.cardId)) {
         seenCards.add(listing.offeredCard.cardId);
         uniqueCards.push(listing.offeredCard);
       }
     });
-    
+   
     return uniqueCards;
   };
 
@@ -105,33 +63,32 @@ export default function Home() {
       <div className="home-container">
         <section className="listings-section">
           <h2>Trending Listings</h2>
+
           {isLoading ? (
             <div className="loading-container">
-              <div className="loading-spinner" />
+              <div className="loading-spinner"></div>
             </div>
           ) : error ? (
-            <p className="error-message">{error}</p>
+            <div className="error-message">{error}</div>
           ) : uniqueCards.length === 0 ? (
-            <p>No trade listings available</p>
+            <div className="error-message">No trade listings available</div>
           ) : (
             <div className="cards-grid">
-  {uniqueCards.map((card) => (
-    <div key={card.cardId} className="card-wrapper">
-      <Link to={`/listing/${card.cardId}`}>
-        <img 
-          src={card.cardImage} 
-          alt={card.name}
-          className="card-image"
-        />
-        <div className="card-details">
-          <h3>{card.name}</h3>
-          <p className="set-name">{card.setName}</p>
-          <p className="rarity">Rarity: {card.rarity}</p>
-        </div>
-      </Link>
-    </div>
-  ))}
-</div>
+              {uniqueCards.map((card) => (
+                <Link to={`/listing/${card.cardId}`} key={card.cardId} className="card-wrapper">
+                  <img 
+                    src={card.cardImage} 
+                    alt={card.name} 
+                    className="card-image" 
+                  />
+                  <div className="card-details">
+                    <h3>{card.name}</h3>
+                    <p className="set-name">{card.setName}</p>
+                    <p className="rarity">Rarity: {card.rarity}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           )}
         </section>
       </div>

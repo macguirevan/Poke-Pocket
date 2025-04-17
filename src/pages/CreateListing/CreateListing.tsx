@@ -18,6 +18,7 @@ export default function CreateListing() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm2, setSearchTerm2] = useState("");
   const [selectedOffering, setSelectedOffering] = useState<Card | null>(null);
   const [selectedExpecting, setSelectedExpecting] = useState<Card[]>([]);
   const username = localStorage.getItem("username");
@@ -86,6 +87,10 @@ export default function CreateListing() {
 
   const filteredCards = cards.filter(card =>
     card.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredCards2 = cards.filter(card =>
+    card.name.toLowerCase().includes(searchTerm2.toLowerCase())
   );
 
   if (isLoading) return <Layout><div>Loading...</div></Layout>;
@@ -200,13 +205,13 @@ export default function CreateListing() {
                       type="text"
                       className="form-control"
                       placeholder="Search cards..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      value={searchTerm2}
+                      onChange={(e) => setSearchTerm2(e.target.value)}
                     />
                   </div>
                   <div className="card-grid-container">
                     <div className="row row-cols-2 row-cols-md-4 g-4">
-                      {filteredCards.map((card) => (
+                      {filteredCards2.map((card) => (
                         <div key={card.cardId} className="col">
                           <div
                             className="card h-100 clickable"
