@@ -112,16 +112,18 @@ export default function User() {
         <section className="profileSection">
           <div className="infoContainer">
             <h1 className="name">{user.username}</h1>
-            <div className="metaItem">
-              <span className="metaLabel">Friend Code:</span>
-              <span className="friendCode">{user.friendId}</span>
-              <button
-                className="clipboardButton"
-                onClick={() => copyToClipboard(user.friendId)}
-              >
-                <img src={clipboardIcon} alt="Copy Friend Code" className="clipboardButton" />
-              </button>
-            </div>
+            {loggedInUserId && (
+              <div className="metaItem">
+                <span className="metaLabel">Friend Code:</span>
+                <span className="friendCode">{user.friendId}</span>
+                <button
+                  className="clipboardButton"
+                  onClick={() => copyToClipboard(user.friendId)}
+                >
+                  <img src={clipboardIcon} alt="Copy Friend Code" className="clipboardButton" />
+                </button>
+              </div>
+            )}
           </div>
         </section>
 
