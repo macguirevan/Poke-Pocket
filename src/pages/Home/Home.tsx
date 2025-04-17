@@ -113,29 +113,24 @@ export default function Home() {
           ) : uniqueCards.length === 0 ? (
             <p>No trade listings available</p>
           ) : (
-            <HorizontalScroll>
-              {uniqueCards.map((card) => (
-                <div key={card.cardId} className="card-wrapper">
-                  <Link to={`/listing/${card.cardId}`}>
-                    <img 
-                      src={card.cardImage} 
-                      alt={card.name}
-                      className="card-image"
-                      style={{
-                        width: "367px",
-                        height: "512px",
-                        objectFit: "cover",
-                      }}
-                    />
-                    <div className="card-details">
-                      <h3>{card.name}</h3>
-                      <p className="set-name">{card.setName}</p>
-                      <p className="rarity">Rarity: {card.rarity}</p>
-                    </div>
-                  </Link>
-                </div>
-              ))}
-            </HorizontalScroll>
+            <div className="cards-grid">
+  {uniqueCards.map((card) => (
+    <div key={card.cardId} className="card-wrapper">
+      <Link to={`/listing/${card.cardId}`}>
+        <img 
+          src={card.cardImage} 
+          alt={card.name}
+          className="card-image"
+        />
+        <div className="card-details">
+          <h3>{card.name}</h3>
+          <p className="set-name">{card.setName}</p>
+          <p className="rarity">Rarity: {card.rarity}</p>
+        </div>
+      </Link>
+    </div>
+  ))}
+</div>
           )}
         </section>
       </div>
