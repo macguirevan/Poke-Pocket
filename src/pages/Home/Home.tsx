@@ -44,15 +44,6 @@ const HorizontalScroll = ({ children }) => {
   );
 };
 
-interface Listing {
-  tradeId: number;
-  offeredCard: Card;
-  requestedCard1: Card;
-  requestedCard2: Card;
-  requestedCard3: Card;
-  requestedCard4: Card;
-}
-
 interface Card {
   cardId: number;
   name: string;
@@ -61,30 +52,52 @@ interface Card {
   cardImage: string;
 }
 
+interface Listing {
+  tradeId: number;
+  offeredCard: Card;
+  requestedCard1: Card | null;
+  requestedCard2: Card | null;
+  requestedCard3: Card | null;
+  requestedCard4: Card | null;
+}
+
 export default function Home() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [error, setError] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchListings = async () => {
       try {
         const response = await fetch("http://localhost:8080/api/trades");
-        if (!response.ok) {
-          throw new Error("Failed to fetch listings");
-        }
+        if (!response.ok) throw new Error("Failed to fetch listings");
         const data: Listing[] = await response.json();
         setListings(data);
-      } catch (err: any) {
-        console.error("Error fetching listings:", err);
-        setError(err.message);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch listings");
       } finally {
         setIsLoading(false);
       }
     };
-
     fetchListings();
   }, []);
+
+  // Get unique cards (no duplicates)
+  const getUniqueCards = () => {
+    const seenCards = new Set<number>();
+    const uniqueCards: Card[] = [];
+    
+    listings.forEach(listing => {
+      if (!seenCards.has(listing.offeredCard.cardId)) {
+        seenCards.add(listing.offeredCard.cardId);
+        uniqueCards.push(listing.offeredCard);
+      }
+    });
+    
+    return uniqueCards;
+  };
+
+  const uniqueCards = getUniqueCards();
 
   return (
     <Layout>
@@ -95,16 +108,18 @@ export default function Home() {
             <div className="loading-container">
               <div className="loading-spinner" />
             </div>
-          ) : listings.length === 0 ? (
-            <p>No trade listings</p>
+          ) : error ? (
+            <p className="error-message">{error}</p>
+          ) : uniqueCards.length === 0 ? (
+            <p>No trade listings available</p>
           ) : (
             <HorizontalScroll>
-              {listings.map((listing) => (
-                <div key={listing.tradeId} className="card-wrapper">
-                  <Link to={`/listing/${listing.offeredCard.cardId}`}>
+              {uniqueCards.map((card) => (
+                <div key={card.cardId} className="card-wrapper">
+                  <Link to={`/listing/${card.cardId}`}>
                     <img 
-                      src={listing.offeredCard.cardImage} 
-                      alt={listing.offeredCard.name}
+                      src={card.cardImage} 
+                      alt={card.name}
                       className="card-image"
                       style={{
                         width: "367px",
@@ -113,7 +128,9 @@ export default function Home() {
                       }}
                     />
                     <div className="card-details">
-                      <h3>{listing.offeredCard.name}</h3>
+                      <h3>{card.name}</h3>
+                      <p className="set-name">{card.setName}</p>
+                      <p className="rarity">Rarity: {card.rarity}</p>
                     </div>
                   </Link>
                 </div>

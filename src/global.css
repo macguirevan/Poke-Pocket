@@ -5,7 +5,7 @@ body {
   margin: 0;
   padding: 0;
   /* Background properties */
-  background-image: url('/assets/images/global-bg.jpg'); /* Adjust path to your image */
+  background-image: url('http://i.imgur.com/lMMX2.jpg'); /* Adjust path to your image */
   background-size: cover; /* Cover entire viewport */
   background-position: center center; /* Center the image */
   background-repeat: no-repeat; /* Prevent repeating */
@@ -21,7 +21,6 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); 
   z-index: -1; 
 }
 
