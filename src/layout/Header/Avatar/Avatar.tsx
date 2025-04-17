@@ -44,14 +44,10 @@ export default function Avatar() {
                 </Link>
               </li>
               <li>
-                <Link to="/messages" onClick={() => toggleDrop()}>
-                  Messages
-                </Link>
-              </li>
-              <li>
                 <Link to="/login" onClick={() => {
                   toggleDrop()
                   localStorage.removeItem('userId');
+                  localStorage.removeItem('username');
                 }}>
                   Logout
                 </Link>

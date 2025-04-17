@@ -1,0 +1,33 @@
+.termsContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .termsTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .termsSection {
+    margin-bottom: 2rem;
+  }
+  
+  .termsSubtitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  
+  .termsSection p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  
+  .termsSection ul {
+    padding-left: 1.5rem;
+    list-style: disc;
+    line-height: 1.6;
+  }  

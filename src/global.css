@@ -1,11 +1,34 @@
 @import './variables.css';
 
+/* Add global background image */
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  /* Background properties */
+  background-image: url(''); /* Adjust path to your image */
+  background-size: cover; /* Cover entire viewport */
+  background-position: center center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent repeating */
+  background-attachment: fixed; /* Fixed position (optional) */
+  background-color: #dddddd; /* Fallback color if image unavailable */
+  min-height: 100vh; /* Ensure body covers full viewport height */
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; 
+  background: rgba(0, 0, 0, 0.1);
 }
 
 body a {
   text-decoration: none;
+}
+
+html, body {
+  height: 100%;
 }

@@ -1,97 +1,95 @@
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../../layout/Layout';
 import './Home.css';
 
-const mockListings = Array(20).fill().map((_, i) => ({
-  id: i + 1,
-  title: `Heracross ${i + 1}`,
-  image: 'https://pocket.pokemongohub.net/_next/image?url=%2Ftcg-pocket%2Fcards%2Fa2a%2Fwebp%2FcPK_10_004250_00_HERACROS_U_M_M_en_US.webp&w=828&q=75'
-}));
+interface Card {
+  cardId: number;
+  name: string;
+  rarity: number;
+  setName: string;
+  cardImage: string;
+}
 
-const HorizontalScroll = ({ children }) => {
-  const scrollRef = useRef(null);
-  const scrollAmount = 400;
-
-  const handleScroll = (direction) => {
-    if (scrollRef.current) {
-      const currentScroll = scrollRef.current.scrollLeft;
-      const newScroll = direction === 'left' 
-        ? currentScroll - scrollAmount 
-        : currentScroll + scrollAmount;
-      
-      scrollRef.current.scrollTo({
-        left: newScroll,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  return (
-    <div className="scroll-wrapper">
-      <button 
-        className="scroll-arrow left" 
-        onClick={() => handleScroll('left')}
-      >
-        &lt;
-      </button>
-      
-      <div className="cards-scroll-container" ref={scrollRef}>
-        {children}
-      </div>
-
-      <button 
-        className="scroll-arrow right" 
-        onClick={() => handleScroll('right')}
-      >
-        &gt;
-      </button>
-    </div>
-  );
-};
+interface Listing {
+  tradeId: number;
+  offeredCard: Card;
+  requestedCard1: Card | null;
+  requestedCard2: Card | null;
+  requestedCard3: Card | null;
+  requestedCard4: Card | null;
+}
 
 export default function Home() {
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/trades");
+        if (!response.ok) throw new Error("Failed to fetch listings");
+        const data: Listing[] = await response.json();
+        setListings(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch listings");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchListings();
+  }, []);
+
+  // Get unique cards (no duplicates)
+  const getUniqueCards = () => {
+    const seenCards = new Set();
+    const uniqueCards: Card[] = [];
+   
+    listings.forEach(listing => {
+      if (!seenCards.has(listing.offeredCard.cardId)) {
+        seenCards.add(listing.offeredCard.cardId);
+        uniqueCards.push(listing.offeredCard);
+      }
+    });
+   
+    return uniqueCards;
+  };
+
+  const uniqueCards = getUniqueCards();
+
   return (
     <Layout>
       <div className="home-container">
         <section className="listings-section">
           <h2>Trending Listings</h2>
-          <HorizontalScroll>
-            {mockListings.map((listing) => (
-              <div key={listing.id} className="card-wrapper">
-                <Link to={`/listing/${listing.id}`}>
-                  <img 
-                    src={listing.image} 
-                    alt={listing.title}
-                    className="card-image"
-                  />
-                  <div className="card-details">
-                    <h3>{listing.title}</h3>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </HorizontalScroll>
-        </section>
 
-        <section className="listings-section">
-          <h2>New Listings</h2>
-          <HorizontalScroll>
-            {[...mockListings].reverse().map((listing) => (
-              <div key={listing.id} className="card-wrapper">
-                <Link to={`/listing/${listing.id}`}>
+          {isLoading ? (
+            <div className="loading-container">
+              <div className="loading-spinner"></div>
+            </div>
+          ) : error ? (
+            <div className="error-message">{error}</div>
+          ) : uniqueCards.length === 0 ? (
+            <div className="error-message">No trade listings available</div>
+          ) : (
+            <div className="cards-grid">
+              {uniqueCards.map((card) => (
+                <Link to={`/listing/${card.cardId}`} key={card.cardId} className="card-wrapper">
                   <img 
-                    src={listing.image} 
-                    alt={listing.title}
-                    className="card-image"
+                    src={card.cardImage} 
+                    alt={card.name} 
+                    className="card-image" 
                   />
                   <div className="card-details">
-                    <h3>{listing.title}</h3>
+                    <h3>{card.name}</h3>
+                    <p className="set-name">{card.setName}</p>
+                    <p className="rarity">Rarity: {card.rarity}</p>
                   </div>
                 </Link>
-              </div>
-            ))}
-          </HorizontalScroll>
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </Layout>

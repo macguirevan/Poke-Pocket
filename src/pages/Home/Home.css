@@ -1,136 +1,49 @@
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-.home-container {
-  padding: 20px;
-}
-
-.listings-section {
-  margin-bottom: 40px;
-}
-
-.listings-section h2 {
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.cards-scroll-container {
-  display: flex;
-  overflow-x: auto;
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Set a specific number of columns */
   gap: 20px;
-  padding-bottom: 10px;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  width: 100%;
+  padding: 10px 0;
 }
 
-.cards-scroll-container::-webkit-scrollbar {
-  display: none; /* Chrome/Safari/Opera */
-}
-
+/* Ensure cards stay within their grid cells */
 .card-wrapper {
-  flex: 0 0 auto;
-  width: 200px;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: transform 0.3s ease;
+  background: #fff;
+  position: relative;
+  width: 100%;
+  height: 100%; /* Ensure consistent height */
+  display: flex;
+  flex-direction: column;
 }
 
-.card-wrapper:hover {
-  transform: translateY(5px);
-}
-
+/* Make images behave properly */
 .card-image {
   width: 100%;
   height: 280px;
   object-fit: cover;
+  background-color: #f5f5f5;
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
-.card-details {
-  padding: 10px;
-  background: white;
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-.card-details h3 {
-  font-size: 1rem;
-  margin: 0 0 5px 0;
-  color: #222;
+@media (max-width: 900px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.card-details p {
-  margin: 0;
-  color: #666;
-  font-weight: bold;
-}
-
-.scroll-wrapper {
-  position: relative;
-  margin: 0 -20px;
-  padding: 0 20px;
-}
-
-.scroll-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  transition: all 0.2s ease;
-}
-
-.scroll-arrow:hover {
-  background: white;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-}
-
-.scroll-arrow.left {
-  left: 0;
-}
-
-.scroll-arrow.right {
-  right: 0;
-}
-
-.cards-scroll-container {
-  scroll-behavior: smooth;
+@media (max-width: 600px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
 }

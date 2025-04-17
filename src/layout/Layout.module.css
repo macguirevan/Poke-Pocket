@@ -1,12 +1,11 @@
 .layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .main {
-  margin-top: 65px;
+  margin-top: 65px; /* Header height */
   flex: 1;
-  overflow-y: auto;
   padding: 1rem;
 }

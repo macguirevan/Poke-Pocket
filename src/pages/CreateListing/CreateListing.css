@@ -1,0 +1,144 @@
+/* ===== Base Styles ===== */
+.home-container {
+  padding: 20px;
+}
+
+.listings-section {
+  margin-bottom: 40px;
+}
+
+.listings-section h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* ===== Horizontal Scroll Section ===== */
+.scroll-wrapper {
+  position: relative;
+  margin: 0 -20px;
+  padding: 0 20px;
+}
+
+/* Horizontal scroll container */
+.cards-scroll-container {
+  display: flex;
+  overflow-x: auto;  /* Horizontal scrolling only */
+  gap: 20px;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+  min-height: 300px; /* Minimum height for loading state */
+}
+
+/* Hide scrollbars while keeping functionality */
+.cards-scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
+}
+.cards-scroll-container {
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Scroll arrows */
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  transition: all 0.2s ease;
+}
+
+.scroll-arrow:hover {
+  background: white;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-arrow.left { left: 0; }
+.scroll-arrow.right { right: 0; }
+
+/* ===== Card Styles ===== */
+.card-wrapper {
+  flex: 0 0 auto;
+  width: 367px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.card-wrapper:hover {
+  transform: translateY(5px);
+}
+
+.card-image {
+  width: 367px;
+  height: 512px;
+  object-fit: cover; 
+}
+
+.card-details {
+  padding: 10px;
+  background: white;
+}
+
+.card-details h3 {
+  font-size: 1rem;
+  margin: 0 0 5px 0;
+  color: #222;
+  text-align: center;
+}
+
+/* ===== Loading State ===== */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px; 
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ===== Vertical Scroll Containers (for other sections) ===== */
+.card-grid-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+}
+
+/* Vertical scrollbar styling */
+.card-grid-container::-webkit-scrollbar {
+  width: 8px;
+}
+.card-grid-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+.card-grid-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+.card-grid-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
