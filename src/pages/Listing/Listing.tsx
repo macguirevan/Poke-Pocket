@@ -1,99 +1,131 @@
-// In Listing.jsx
 import { useParams, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Layout from '../../layout/Layout';
 import './Listing.css';
 
 interface Card {
-  id: number;
-  title: string;
-  image: string;
-  username: string;
-  requestedCards: number[];
+  cardId: number;
+  name: string;
+  cardImage: string;
+  rarity: number;
+  setName: string;
 }
 
-export const mockListings: Card[] = Array(20).fill(null).map((_, i) => ({
-  id: i,
-  title: `Heracross ${i}`,
-  image: 'https://pocket.pokemongohub.net/_next/image?url=%2Ftcg-pocket%2Fcards%2Fa2a%2Fwebp%2FcPK_10_004250_00_HERACROS_U_M_M_en_US.webp&w=828&q=75',
-  username: `Trainer${String.fromCharCode(65 + i)}`,
-  requestedCards: Array(4).fill(null).map((_, j) => (i + j + 1) % 20),
-}));
+interface Trade {
+  tradeId: number;
+  offeredCard: Card;
+  requestedCard1: Card | null;
+  requestedCard2: Card | null;
+  requestedCard3: Card | null;
+  requestedCard4: Card | null;
+}
 
 export default function Listing() {
   const { id } = useParams();
-  const listing = mockListings.find(item => item.id === Number(id));
+  const [card, setCard] = useState<Card | null>(null);
+  const [trades, setTrades] = useState<Trade[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  if (!listing) {
-    return (
-      <Layout>
-        <div className="error">Listing not found</div>
-      </Layout>
-    );
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch card details
+        const cardResponse = await fetch(`http://localhost:8080/api/cards/${id}`);
+        if (!cardResponse.ok) throw new Error('Card not found');
+        const cardData = await cardResponse.json();
+        setCard(cardData);
 
-  // Process requested cards and group by user
-  const requestedCards: Card[] = listing.requestedCards
-  .map(requestedId => mockListings.find(c => c.id === requestedId))
-  .filter((c): c is Card => c !== undefined);
+        // Fetch all trades
+        const tradesResponse = await fetch('http://localhost:8080/api/trades');
+        if (!tradesResponse.ok) throw new Error('Failed to fetch trades');
+        const allTrades: Trade[] = await tradesResponse.json();
 
-  const groupedByUser = requestedCards.reduce((groups: { [key: string]: Card[] }, card: Card) => {
-    const username = card.username;
-    groups[username] = groups[username] || [];
-    groups[username].push(card);
-    return groups;
-  }, {} as { [key: string]: Card[] });
+        // Filter trades for this specific card
+        const relevantTrades = allTrades.filter(trade => 
+          trade.offeredCard.cardId === Number(id)
+        );
+        setTrades(relevantTrades);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading) return <Layout><div>Loading...</div></Layout>;
+  if (error) return <Layout><div>Error: {error}</div></Layout>;
+  if (!card) return <Layout><div>Card not found</div></Layout>;
+
+  // Helper function to get valid requested cards from a trade
+  const getRequestedCards = (trade: Trade) => {
+    return [
+      trade.requestedCard1,
+      trade.requestedCard2,
+      trade.requestedCard3,
+      trade.requestedCard4
+    ].filter(card => card !== null) as Card[];
+  };
 
   return (
     <Layout>
       <div className="listing-container">
-        {/* Left Column */}
+        {/* Left Column - Offered Card Details */}
         <div className="left-column">
-          <h1>{listing.title}</h1>
+          <h1>{card.name}</h1>
           <div className="card-detail">
             <img 
-              src={listing.image} 
-              alt={listing.title}
+              src={card.cardImage} 
+              alt={card.name}
               className="detail-image"
             />
             <div className="detail-info">
-              <p>Listing ID: {id}</p>
-              <p>Card Description:</p>
+              <p>Set: {card.setName}</p>
             </div>
           </div>
         </div>
 
-        {/* Right Column with grouped trades */}
+        {/* Right Column - Trade Listings */}
         <div className="right-column">
           <div className="trade-section">
-            <h2>Requested Trades</h2>
-            <div className="user-trades-container">
-              {Object.entries(groupedByUser).map(([username, cards]) => (
-                <div className="user-trade-group" key={username}>
-                  <div className="user-header">
-                    <Link to={`/user/${username}`} className="username">{username}</Link>
-                    <span className="user-rating">⭐ ratingID</span>
+            <h2>Active Trade Listings</h2>
+            <div className="trades-container">
+              {trades.map(trade => {
+                const requestedCards = getRequestedCards(trade);
+                
+                return (
+                  <div key={trade.tradeId} className="trade-listing">
+                    <div className="trade-header">
+                      <h3>Trade #{trade.tradeId -  1}</h3>
+                      <span className="badge bg-secondary">
+                        {requestedCards.length} cards requested
+                      </span>
+                    </div>
+                    
+                    <div className="requested-cards-grid">
+                      {requestedCards.map(requestedCard => (
+                        <Link 
+                          key={requestedCard.cardId} 
+                          to={`/listing/${requestedCard.cardId}`}
+                          className="trade-card"
+                        >
+                          <img
+                            src={requestedCard.cardImage}
+                            alt={requestedCard.name}
+                            className="trade-card-image"
+                          />
+                          <div className="trade-card-info">
+                            <h4>{requestedCard.name}</h4>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                  <div className="user-cards-grid">
-                    {cards.map((card) => (
-                      <Link 
-                        to={`/listing/${card.id}`} 
-                        className="trade-card"
-                        key={card.id}
-                      >
-                        <img
-                          src={card.image}
-                          alt={card.title}
-                          className="trade-card-image"
-                        />
-                        <div className="trade-card-info">
-                          <h3>{card.title}</h3>
-                          <p>ID: {card.id}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
