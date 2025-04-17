@@ -20,6 +20,7 @@ export default function CreateListing() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOffering, setSelectedOffering] = useState<Card | null>(null);
   const [selectedExpecting, setSelectedExpecting] = useState<Card[]>([]);
+  const username = localStorage.getItem("username");
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -60,20 +61,23 @@ export default function CreateListing() {
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:8080/api/listings", {
+    try {  
+      const response = await fetch("http://localhost:8080/api/trades", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
+          username: username,
           offeredCardId: selectedOffering.cardId,
-          requestedCardIds: selectedExpecting.map(c => c.cardId),
+          requestedCard1Id: selectedExpecting[0]?.cardId ?? null,
+          requestedCard2Id: selectedExpecting[1]?.cardId ?? null,
+          requestedCard3Id: selectedExpecting[2]?.cardId ?? null,
+          requestedCard4Id: selectedExpecting[3]?.cardId ?? null,
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to create listing");
+      if (!response.ok) throw new Error("Failed to create listing with POST");
       navigate("/");
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to create listing");
