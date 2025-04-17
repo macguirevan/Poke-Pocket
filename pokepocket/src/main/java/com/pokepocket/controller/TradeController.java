@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.pokepocket.model.Card;
 import com.pokepocket.model.Trade;
 import com.pokepocket.model.TradeRequest;
+import com.pokepocket.model.TradeResponse;
 import com.pokepocket.model.User;
 import com.pokepocket.repository.CardRepository;
 import com.pokepocket.repository.TradeRepository;
@@ -31,25 +32,34 @@ public class TradeController {
   }
 
   @GetMapping
-  public List<Trade> getAllTrades() {
-    return tradeRepository.findAll();
+  public List<TradeResponse> getAllTrades() {
+    List<Trade> trades = tradeRepository.findAll();
+    return trades.stream()
+            .map(this::convertToResponse)
+            .toList();
   }
 
   @GetMapping("/{tradeId}")
   public ResponseEntity<?> getTradeById(@PathVariable Integer tradeId) {
     return tradeRepository.findById(tradeId)
-            .map(ResponseEntity::ok)
+            .map(trade -> ResponseEntity.ok(convertToResponse(trade)))
             .orElse(ResponseEntity.notFound().build());
   }
 
   @GetMapping("/users/{userId}")
-  public List<Trade> getTradesByUserId(@PathVariable Integer userId) {
-    return tradeRepository.findByUser_UserId(userId);
+  public List<TradeResponse> getTradesByUserId(@PathVariable Integer userId) {
+    List<Trade> trades = tradeRepository.findByUser_UserId(userId);
+    return trades.stream()
+            .map(this::convertToResponse)
+            .toList();
   }
 
   @GetMapping("/username/{username}")
-  public List<Trade> getTradesByUsername(@PathVariable String username) {
-    return tradeRepository.findByUser_Username(username);
+  public List<TradeResponse> getTradesByUsername(@PathVariable String username) {
+    List<Trade> trades = tradeRepository.findByUser_Username(username);
+    return trades.stream()
+            .map(this::convertToResponse)
+            .toList();
   }
 
   @PostMapping
@@ -145,5 +155,17 @@ public class TradeController {
 
     Trade updatedTrade = tradeRepository.save(trade);
     return ResponseEntity.ok(updatedTrade);
+  }
+
+  private TradeResponse convertToResponse(Trade trade) {
+    return new TradeResponse(
+            trade.getTradeId(),
+            trade.getUser().getUsername(),
+            trade.getOfferedCard(),
+            trade.getRequestedCard1(),
+            trade.getRequestedCard2(),
+            trade.getRequestedCard3(),
+            trade.getRequestedCard4()
+    );
   }
 }
