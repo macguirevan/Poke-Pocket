@@ -225,5 +225,10 @@ const styles = {
   name: {
     fontSize: '2rem',
     fontWeight: 'bold',
+  },
+  infoContainer: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '2rem',
   }
 }

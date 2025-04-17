@@ -3,12 +3,20 @@ import { useParams, Link } from 'react-router-dom';
 import Layout from '../../layout/Layout';
 import './Listing.css';
 
-export const mockListings = Array(20).fill().map((_, i) => ({
+interface Card {
+  id: number;
+  title: string;
+  image: string;
+  username: string;
+  requestedCards: number[];
+}
+
+export const mockListings: Card[] = Array(20).fill(null).map((_, i) => ({
   id: i,
   title: `Heracross ${i}`,
   image: 'https://pocket.pokemongohub.net/_next/image?url=%2Ftcg-pocket%2Fcards%2Fa2a%2Fwebp%2FcPK_10_004250_00_HERACROS_U_M_M_en_US.webp&w=828&q=75',
   username: `Trainer${String.fromCharCode(65 + i)}`,
-  requestedCards: Array(4).fill().map((_, j) => (i + j + 1) % 20)
+  requestedCards: Array(4).fill(null).map((_, j) => (i + j + 1) % 20),
 }));
 
 export default function Listing() {
@@ -24,16 +32,16 @@ export default function Listing() {
   }
 
   // Process requested cards and group by user
-  const requestedCards = listing.requestedCards
-    .map(requestedId => mockListings.find(c => c.id === requestedId))
-    .filter(Boolean);
+  const requestedCards: Card[] = listing.requestedCards
+  .map(requestedId => mockListings.find(c => c.id === requestedId))
+  .filter((c): c is Card => c !== undefined);
 
-  const groupedByUser = requestedCards.reduce((groups, card) => {
+  const groupedByUser = requestedCards.reduce((groups: { [key: string]: Card[] }, card: Card) => {
     const username = card.username;
     groups[username] = groups[username] || [];
     groups[username].push(card);
     return groups;
-  }, {});
+  }, {} as { [key: string]: Card[] });
 
   return (
     <Layout>
