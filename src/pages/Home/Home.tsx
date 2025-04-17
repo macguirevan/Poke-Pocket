@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSearch } from '../../contexts/SearchContext';
 import { Link } from 'react-router-dom';
 import Layout from '../../layout/Layout';
 import './Home.css';
@@ -24,6 +25,7 @@ export default function Home() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const { searchTerm } = useSearch();
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -45,18 +47,45 @@ export default function Home() {
   const getUniqueCards = () => {
     const seenCards = new Set();
     const uniqueCards: Card[] = [];
-   
+
     listings.forEach(listing => {
       if (!seenCards.has(listing.offeredCard.cardId)) {
         seenCards.add(listing.offeredCard.cardId);
         uniqueCards.push(listing.offeredCard);
       }
     });
-   
+
     return uniqueCards;
   };
 
+  const getRarityLabel = (rarity: number): string => {
+    switch (rarity) {
+      case 1:
+        return "Common";
+      case 2:
+        return "Uncommon";
+      case 3:
+        return "Rare";
+      case 4:
+        return "Double Rare";
+      case 5:
+        return "Illustration Rare";
+      case 6:
+        return "Special Art Rare";
+      case 7:
+        return "Immersive Rare";
+      case 8:
+        return "Crown Rare";
+      default:
+        return "Crown Rare";
+    }
+  };
+
   const uniqueCards = getUniqueCards();
+
+  const filteredCards = uniqueCards.filter((card) =>
+    card.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <Layout>
@@ -70,11 +99,11 @@ export default function Home() {
             </div>
           ) : error ? (
             <div className="error-message">{error}</div>
-          ) : uniqueCards.length === 0 ? (
-            <div className="error-message">No trade listings available</div>
+          ) : filteredCards.length === 0 ? (
+            <div className="error-message">No trade listings match your search</div>
           ) : (
             <div className="cards-grid">
-              {uniqueCards.map((card) => (
+              {filteredCards.map((card) => (
                 <Link to={`/listing/${card.cardId}`} key={card.cardId} className="card-wrapper">
                   <img 
                     src={card.cardImage} 
@@ -82,9 +111,11 @@ export default function Home() {
                     className="card-image" 
                   />
                   <div className="card-details">
-                    <h3>{card.name}</h3>
+                    <div className="card-name-details">
+                      <h3 className="card-name">{card.name}</h3>
+                    </div>
                     <p className="set-name">{card.setName}</p>
-                    <p className="rarity">Rarity: {card.rarity}</p>
+                    <p className="rarity">Rarity: {getRarityLabel(card.rarity)}</p>
                   </div>
                 </Link>
               ))}
