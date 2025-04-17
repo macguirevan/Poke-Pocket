@@ -5,7 +5,7 @@ body {
   margin: 0;
   padding: 0;
   /* Background properties */
-  background-image: url('http://i.imgur.com/lMMX2.jpg'); /* Adjust path to your image */
+  background-image: url(''); /* Adjust path to your image */
   background-size: cover; /* Cover entire viewport */
   background-position: center center; /* Center the image */
   background-repeat: no-repeat; /* Prevent repeating */
