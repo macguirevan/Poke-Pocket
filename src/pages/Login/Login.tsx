@@ -53,6 +53,7 @@ export default function Login() {
 
         if (matchedUser) {
           localStorage.setItem("userId", matchedUser.userId.toString());
+          localStorage.setItem("username", matchedUser.username.toString());
           console.log("Stored User ID in LocalStorage:", matchedUser.userId);
         } else {
           console.error("User not found");
