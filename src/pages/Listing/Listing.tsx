@@ -14,7 +14,6 @@ interface Card {
 interface Trade {
   tradeId: number;
   username: string;
-  userId: number; // Added userId field
   offeredCard: Card;
   requestedCard1: Card | null;
   requestedCard2: Card | null;
@@ -22,10 +21,16 @@ interface Trade {
   requestedCard4: Card | null;
 }
 
+interface User {
+  userId: number;
+  username: string;
+}
+
 export default function Listing() {
   const { id } = useParams();
   const [card, setCard] = useState<Card | null>(null);
   const [trades, setTrades] = useState<Trade[]>([]);
+  const [userMap, setUserMap] = useState<Map<string, number>>(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -48,6 +53,29 @@ export default function Listing() {
           trade.offeredCard.cardId === Number(id)
         );
         setTrades(relevantTrades);
+        
+        // Create a set of unique usernames from trades
+        const uniqueUsernames = new Set(relevantTrades.map(trade => trade.username));
+        
+        // Create a map to store username -> userId
+        const usernameToIdMap = new Map<string, number>();
+        
+        // Fetch user IDs for each username
+        await Promise.all(
+          Array.from(uniqueUsernames).map(async (username) => {
+            try {
+              const userResponse = await fetch(`http://localhost:8080/api/users/username/${username}`);
+              if (userResponse.ok) {
+                const userData: User = await userResponse.json();
+                usernameToIdMap.set(username, userData.userId);
+              }
+            } catch (err) {
+              console.error(`Failed to fetch user ID for ${username}:`, err);
+            }
+          })
+        );
+        
+        setUserMap(usernameToIdMap);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch data');
       } finally {
@@ -98,14 +126,21 @@ export default function Listing() {
               {trades.map(trade => {
                 const requestedCards = getRequestedCards(trade);
                 const $username = trade.username;
+                const userId = userMap.get($username);
                 
                 return (
                   <div key={trade.tradeId} className="trade-listing">
                     <div className="trade-header">
                       <h3>
-                        <Link to={`/user/${trade.userId}`}>
-                          {$username}
-                        </Link>
+                        {userId ? (
+                          <Link to={`/user/${userId}`}>
+                            {$username}
+                          </Link>
+                        ) : (
+                          <Link to={`/user/username/${$username}`}>
+                            {$username}
+                          </Link>
+                        )}
                       </h3>
                       <span className="badge bg-secondary">
                         {requestedCards.length} cards requested
