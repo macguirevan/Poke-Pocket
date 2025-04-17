@@ -1,0 +1,78 @@
+Before Starting:
+cd pokepocket
+
+### Setup ###
+
+1. Run the commands in order:
+chmod +x setup-secrets.sh
+./setup-secrets.sh
+
+2. Send the file secrets/ssh_key.pub on discord
+
+
+### Pull from AWS and Run ###
+
+1. Pull the new image locally:
+docker-compose pull
+docker-compose up --build
+
+
+
+### Workflow ###
+1. Install AWS CLI and configure with their credentials
+2. Set up Docker on their local machine
+3. To deploy a new version:
+# Log in to ECR
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 207309871349.dkr.ecr.us-east-1.amazonaws.com
+
+# Build the image
+docker build -t pokepocket-app .
+
+# Tag the image (with version)
+docker tag pokepocket-app:latest 207309871349.dkr.ecr.us-east-1.amazonaws.com/pokepocket-app:v1.0.x
+
+# Also tag as latest
+docker tag pokepocket-app:latest 207309871349.dkr.ecr.us-east-1.amazonaws.com/pokepocket-app:latest
+
+# Push the images
+docker push 207309871349.dkr.ecr.us-east-1.amazonaws.com/pokepocket-app:v1.0.x
+docker push 207309871349.dkr.ecr.us-east-1.amazonaws.com/pokepocket-app:latest
+
+# Force new deployment
+aws ecs update-service --cluster pokepocket-cluster --service pokepocket-service --force-new-deployment
+
+
+
+### Push New Image After Changes ###
+
+1. Authenticate Docker to your ECR registry (if you haven’t yet):
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 207309871349.dkr.ecr.us-east-1.amazonaws.com
+
+2. Build the Docker image locally:
+docker build -t pokepocket-app .
+
+3. Tag the image for your ECR repo:
+docker tag pokepocket-app:latest 207309871349.dkr.ecr.us-east-1.amazonaws.com/pokepocket-app:latest
+
+4. Push the new image to ECR:
+docker push 207309871349.dkr.ecr.us-east-1.amazonaws.com/pokepocket-app:latest
+
+
+### Set Up Dev Access ###
+# Create developer group
+aws iam create-group --group-name PokepocketDevs
+
+# Create policy for developer permissions
+aws iam create-policy \
+  --policy-name PokepocketDevPolicy \
+  --policy-document file://dev-policy.json
+
+# Attach policy to group
+aws iam attach-group-policy \
+  --group-name PokepocketDevs \
+  --policy-arn arn:aws:iam::207309871349:policy/PokepocketDevPolicy
+
+# Add users to group
+aws iam add-user-to-group \
+  --group-name PokepocketDevs \
+  --user-name pokepocket-dev
