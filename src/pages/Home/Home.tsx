@@ -64,6 +64,7 @@ interface Card {
 export default function Home() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -77,6 +78,8 @@ export default function Home() {
       } catch (err: any) {
         console.error("Error fetching listings:", err);
         setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -88,7 +91,11 @@ export default function Home() {
       <div className="home-container">
         <section className="listings-section">
           <h2>Trending Listings</h2>
-          {listings.length === 0 ? (
+          {isLoading ? (
+            <div className="loading-container">
+              <div className="loading-spinner" />
+            </div>
+          ) : listings.length === 0 ? (
             <p>No trade listings</p>
           ) : (
             <HorizontalScroll>
@@ -99,6 +106,11 @@ export default function Home() {
                       src={listing.offeredCard.cardImage} 
                       alt={listing.offeredCard.name}
                       className="card-image"
+                      style={{
+                        width: "183.5px",
+                        height: "256px",
+                        objectFit: "cover",
+                      }}
                     />
                     <div className="card-details">
                       <h3>{listing.offeredCard.name}</h3>
