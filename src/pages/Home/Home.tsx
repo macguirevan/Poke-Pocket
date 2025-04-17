@@ -107,8 +107,8 @@ export default function Home() {
                       alt={listing.offeredCard.name}
                       className="card-image"
                       style={{
-                        width: "183.5px",
-                        height: "256px",
+                        width: "367px",
+                        height: "512px",
                         objectFit: "cover",
                       }}
                     />
