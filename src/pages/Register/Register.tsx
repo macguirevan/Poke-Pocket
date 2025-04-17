@@ -72,7 +72,7 @@ export default function SignUp() {
         setFriendID("");
         setErrorMessage("");
         setSuccessMessage("Account created successfully! Redirecting...");
-        setTimeout(() => navigate("/"), 1000);
+        setTimeout(() => navigate("/"), 500);
       } catch (error: any) {
         console.error("Error fetching user:", error);
       }

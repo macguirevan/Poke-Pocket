@@ -63,7 +63,7 @@ export default function Login() {
         console.error("Error fetching user ID:", error);
       }
       
-      setTimeout(() => navigate("/"), 1000);
+      setTimeout(() => navigate("/"), 500);
     } catch (error : any) {
       setErrorMessage(error.message);
       setUsername("");
