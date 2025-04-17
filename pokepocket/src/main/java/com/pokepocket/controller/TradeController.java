@@ -17,7 +17,10 @@ import com.pokepocket.repository.TradeRepository;
 import com.pokepocket.repository.UserRepository;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+  "http://localhost:5173", 
+  "http://pokepocketbucket.s3-website-us-east-1.amazonaws.com"
+})
 @RequestMapping("/api/trades")
 public class TradeController {
 

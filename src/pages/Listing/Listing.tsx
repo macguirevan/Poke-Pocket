@@ -38,13 +38,13 @@ export default function Listing() {
     const fetchData = async () => {
       try {
         // Fetch card details
-        const cardResponse = await fetch(`http://localhost:8080/api/cards/${id}`);
+        const cardResponse = await fetch(`http://54.175.234.211:8080/api/cards/${id}`);
         if (!cardResponse.ok) throw new Error('Card not found');
         const cardData = await cardResponse.json();
         setCard(cardData);
 
         // Fetch all trades
-        const tradesResponse = await fetch('http://localhost:8080/api/trades');
+        const tradesResponse = await fetch('http://54.175.234.211:8080/api/trades');
         if (!tradesResponse.ok) throw new Error('Failed to fetch trades');
         const allTrades: Trade[] = await tradesResponse.json();
 
@@ -64,7 +64,7 @@ export default function Listing() {
         await Promise.all(
           Array.from(uniqueUsernames).map(async (username) => {
             try {
-              const userResponse = await fetch(`http://localhost:8080/api/users/username/${username}`);
+              const userResponse = await fetch(`http://54.175.234.211:8080/api/users/username/${username}`);
               if (userResponse.ok) {
                 const userData: User = await userResponse.json();
                 usernameToIdMap.set(username, userData.userId);

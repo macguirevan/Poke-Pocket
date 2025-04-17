@@ -28,7 +28,7 @@ export default function Home() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/trades");
+        const response = await fetch("http://54.175.234.211:8080/api/trades");
         if (!response.ok) throw new Error("Failed to fetch listings");
         const data: Listing[] = await response.json();
         setListings(data);
