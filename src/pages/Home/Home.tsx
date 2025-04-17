@@ -101,7 +101,7 @@ export default function Home() {
             <HorizontalScroll>
               {listings.map((listing) => (
                 <div key={listing.tradeId} className="card-wrapper">
-                  <Link to={`/listing/${listing.tradeId}`}>
+                  <Link to={`/listing/${listing.offeredCard.cardId}`}>
                     <img 
                       src={listing.offeredCard.cardImage} 
                       alt={listing.offeredCard.name}
