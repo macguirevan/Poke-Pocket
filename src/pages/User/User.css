@@ -1,0 +1,161 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .profileSection {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .userMeta {
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+  }
+  
+  .metaItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .metaLabel {
+    font-weight: 600;
+    color: #666;
+  }
+  
+  .rating {
+    color: #ff9800;
+    font-weight: bold;
+  }
+  
+  .friendCode {
+    font-family: monospace;
+    background-color: #f5f5f5;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+  
+  .listingsSection {
+    margin-top: 2rem;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sectionTitle {
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  .listingsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .listingCard {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #f8f8f8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .listingCard:hover {
+    transform: translateY(-2px);
+  }
+  
+  .listingImage {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    padding: 1rem;
+    background-color: #fff;
+    flex: 1 1 auto;
+  }
+  
+  .listingInfo {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+  }
+  
+  .listingTitle {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .listingSet {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  .requestedCardsCount {
+    padding: 0.75rem;
+    background-color: #f0f0f0;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+  }
+  
+  .noListings {
+    color: #666;
+    text-align: center;
+    padding: 2rem;
+    grid-column: 1 / -1;
+  }
+  
+  .name {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .infoContainer {
+    flex: 1;
+  }
+  
+  .listingHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .trashButton {
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }  
+
+  .trashButton:hover {
+    transform: scale(1.1);
+  }
