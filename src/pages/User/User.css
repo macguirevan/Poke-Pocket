@@ -159,3 +159,20 @@
   .trashButton:hover {
     transform: scale(1.1);
   }
+
+  .clipboardButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+  
+  .clipboardButton:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s;
+  }

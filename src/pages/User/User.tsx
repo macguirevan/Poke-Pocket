@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from "../../layout/Layout";
 import trashIcon from '../../assets/TrashCanIcon.png';
+import clipboardIcon from '../../assets/Clipboard.png';
 import './User.css';  // Import the CSS file
 
 interface Card {
@@ -69,6 +70,12 @@ export default function User() {
     fetchUserData();
   }, [userId]);
 
+  function copyToClipboard(friendCode: string) {
+    navigator.clipboard.writeText(friendCode)
+      .then(() => alert("Friend Code copied to clipboard!"))
+      .catch((error) => alert("Failed to copy: " + error));
+  }
+
   async function deleteTrade(tradeId: number) {
     const confirmDelete = window.confirm("Are you sure you want to delete this listing?");
     if (!confirmDelete) return;
@@ -108,6 +115,12 @@ export default function User() {
             <div className="metaItem">
               <span className="metaLabel">Friend Code:</span>
               <span className="friendCode">{user.friendId}</span>
+              <button
+                className="clipboardButton"
+                onClick={() => copyToClipboard(user.friendId)}
+              >
+                <img src={clipboardIcon} alt="Copy Friend Code" className="clipboardButton" />
+              </button>
             </div>
           </div>
         </section>
