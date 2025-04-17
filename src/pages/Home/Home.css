@@ -47,3 +47,36 @@
     grid-template-columns: 1fr;
   }
 }
+
+.card-name-details {
+  background-color: rgba(88, 244, 188, 0.5);    /* light green background */
+  padding: 8px 12px;             /* spacing inside the box */
+  border-radius: 8px;            /* rounded corners */
+  display: inline-block;         /* so the box fits the text */
+  font-weight: bold;
+  color: #155724;                /* darker green text */
+  width: 100%;                   /* stretch across the card */
+  box-sizing: border-box;       /* include padding in width */
+  text-align: center;
+}
+
+.card-name {
+  font-size: 0.8rem;
+  color: #888;
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+.set-name {
+  font-size: 1.0rem;
+  color: #555;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.rarity {
+  font-size: 1.0rem;
+  color: #888;
+  font-style: italic;
+  margin-top: 2px;
+}

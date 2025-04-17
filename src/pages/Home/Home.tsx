@@ -28,7 +28,7 @@ export default function Home() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const response = await fetch("http://54.175.234.211:8080/api/trades");
+        const response = await fetch("http://34.201.94.196:8080/api/trades");
         if (!response.ok) throw new Error("Failed to fetch listings");
         const data: Listing[] = await response.json();
         setListings(data);
@@ -54,6 +54,29 @@ export default function Home() {
     });
    
     return uniqueCards;
+  };
+
+  const getRarityLabel = (rarity: number): string => {
+    switch (rarity) {
+      case 1:
+        return "Common";
+      case 2:
+        return "Uncommon";
+      case 3:
+        return "Rare";
+      case 4:
+        return "Double Rare";
+      case 5:
+        return "Illustration Rare";
+      case 6:
+        return "Special Art Rare";
+      case 7:
+        return "Immersive Rare";
+      case 8:
+        return "Crown Rare";
+      default:
+        return "Crown Rare";
+    }
   };
 
   const uniqueCards = getUniqueCards();
@@ -82,9 +105,11 @@ export default function Home() {
                     className="card-image" 
                   />
                   <div className="card-details">
-                    <h3>{card.name}</h3>
+                    <div className="card-name-details">
+                      <h3 className="card-name">{card.name}</h3>
+                    </div>
                     <p className="set-name">{card.setName}</p>
-                    <p className="rarity">Rarity: {card.rarity}</p>
+                    <p className="rarity">Rarity: {getRarityLabel(card.rarity)}</p>
                   </div>
                 </Link>
               ))}
