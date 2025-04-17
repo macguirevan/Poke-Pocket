@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from "../../layout/Layout";
+import trashIcon from '../../assets/TrashCanIcon.png';
 
 interface Card {
   cardId: number;
@@ -31,6 +32,7 @@ interface User {
 
 export default function User() {
   const { userId } = useParams();
+  const loggedInUserId = localStorage.getItem("userId");
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -66,6 +68,31 @@ export default function User() {
     fetchUserData();
   }, [userId]);
 
+  async function deleteTrade(tradeId: number) {
+    const confirmDelete = window.confirm("Are you sure you want to delete this listing?");
+    if (!confirmDelete) return;
+  
+    try {
+      const response = await fetch(`http://localhost:8080/api/trades/${tradeId}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to delete trade");
+      }
+  
+      // Remove the trade from state after successful deletion
+      setUser(prevUser =>
+        prevUser
+          ? { ...prevUser, trades: prevUser.trades.filter(trade => trade.tradeId !== tradeId) }
+          : null
+      );
+    } catch (error) {
+      console.error("Error deleting trade:", error);
+      alert(error instanceof Error ? error.message : "An unknown error occurred");
+    }
+  }
+
   if (loading) return <Layout><div>Loading user profile...</div></Layout>;
   if (error) return <Layout><div>Error: {error}</div></Layout>;
   if (!user) return <Layout><div>User not found</div></Layout>;
@@ -96,7 +123,20 @@ export default function User() {
                   style={styles.listingCard}
                 >
                   <div style={styles.listingInfo}>
-                    <h3 style={styles.listingTitle}>{trade.offeredCard.name}</h3>
+                    <div style={styles.listingHeader}>
+                      <h3 style={styles.listingTitle}>{trade.offeredCard.name}</h3>
+                      {loggedInUserId === userId && (
+                        <button
+                          style={styles.trashButton}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            deleteTrade(trade.tradeId);
+                          }}
+                        >
+                          <img src={trashIcon} alt="Delete listing" style={styles.trashButton} />
+                        </button>
+                      )}
+                    </div>
                     <p style={styles.listingSet}>{trade.offeredCard.setName}</p>
                   </div>
                   
@@ -244,5 +284,18 @@ const styles = {
   },
   infoContainer: {
     flex: '1',
+  },
+  listingHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  trashButton: {
+    width: '40px',
+    height: '40px',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: 0,
   }
 };
