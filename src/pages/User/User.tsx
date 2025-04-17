@@ -201,7 +201,7 @@ const styles = {
   listingImage: {
     width: '100%',
     height: '200px',
-    objectFit: 'contain',
+    objectFit: 'contain' as 'contain',
     padding: '1rem',
     backgroundColor: '#f8f8f8'
   },
@@ -219,7 +219,11 @@ const styles = {
   },
   noListings: {
     color: '#666',
-    textAlign: 'center',
+    textAlign: 'center' as 'center',
     padding: '2rem'
+  }, 
+  name: {
+    fontSize: '2rem',
+    fontWeight: 'bold',
   }
 }

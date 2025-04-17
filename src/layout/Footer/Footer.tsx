@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import styles from './Footer.module.css'
 import Logo from '../../assets/logo.svg'
-import { FaTwitter, FaFacebook, FaInstagram, FaQuestionCircle, FaEnvelope, FaExchangeAlt } from 'react-icons/fa'
+import { FaTwitter, FaFacebook, FaInstagram } from 'react-icons/fa'
 
 export default function Footer() {
   return (
