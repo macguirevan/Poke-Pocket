@@ -64,6 +64,7 @@ export default function SignUp() {
         const userData = await response.json();
       
         localStorage.setItem("userId", userData.userId);
+        localStorage.setItem("username", username);
         setUsername("");
         setPassword("");
         setConfirmPassword("");
