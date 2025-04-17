@@ -13,6 +13,7 @@ interface Card {
 
 interface Trade {
   tradeId: number;
+  username: string;
   offeredCard: Card;
   requestedCard1: Card | null;
   requestedCard2: Card | null;
@@ -95,11 +96,16 @@ export default function Listing() {
             <div className="trades-container">
               {trades.map(trade => {
                 const requestedCards = getRequestedCards(trade);
+                const $username = trade.username;
                 
                 return (
                   <div key={trade.tradeId} className="trade-listing">
                     <div className="trade-header">
-                      <h3>Trade #{trade.tradeId -  1}</h3>
+                      <h3>
+                        <Link to={`/user/${$username}`}>
+                          {$username}
+                        </Link>
+                      </h3>
                       <span className="badge bg-secondary">
                         {requestedCards.length} cards requested
                       </span>
