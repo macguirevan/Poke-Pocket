@@ -26,7 +26,7 @@ export default function CreateListing() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/cards");
+        const response = await fetch("http://54.175.234.211:8080/api/cards");
         if (!response.ok) throw new Error("Failed to fetch cards");
         const data = await response.json();
         setCards(data);
@@ -63,7 +63,7 @@ export default function CreateListing() {
     }
 
     try {  
-      const response = await fetch("http://localhost:8080/api/trades", {
+      const response = await fetch("http://54.175.234.211:8080/api/trades", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
