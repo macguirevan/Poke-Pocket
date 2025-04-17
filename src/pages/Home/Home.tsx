@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSearch } from '../../contexts/SearchContext';
 import { Link } from 'react-router-dom';
 import Layout from '../../layout/Layout';
 import './Home.css';
@@ -24,6 +25,7 @@ export default function Home() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const { searchTerm } = useSearch();
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -45,14 +47,14 @@ export default function Home() {
   const getUniqueCards = () => {
     const seenCards = new Set();
     const uniqueCards: Card[] = [];
-   
+
     listings.forEach(listing => {
       if (!seenCards.has(listing.offeredCard.cardId)) {
         seenCards.add(listing.offeredCard.cardId);
         uniqueCards.push(listing.offeredCard);
       }
     });
-   
+
     return uniqueCards;
   };
 
@@ -81,6 +83,10 @@ export default function Home() {
 
   const uniqueCards = getUniqueCards();
 
+  const filteredCards = uniqueCards.filter((card) =>
+    card.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <Layout>
       <div className="home-container">
@@ -93,11 +99,11 @@ export default function Home() {
             </div>
           ) : error ? (
             <div className="error-message">{error}</div>
-          ) : uniqueCards.length === 0 ? (
-            <div className="error-message">No trade listings available</div>
+          ) : filteredCards.length === 0 ? (
+            <div className="error-message">No trade listings match your search</div>
           ) : (
             <div className="cards-grid">
-              {uniqueCards.map((card) => (
+              {filteredCards.map((card) => (
                 <Link to={`/listing/${card.cardId}`} key={card.cardId} className="card-wrapper">
                   <img 
                     src={card.cardImage} 
