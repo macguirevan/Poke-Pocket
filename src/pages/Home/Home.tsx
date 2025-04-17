@@ -1,13 +1,14 @@
 import { useRef, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../../layout/Layout';
 import './Home.css';
 
-const HorizontalScroll = ({ children }) => {
-  const scrollRef = useRef(null);
+const HorizontalScroll = ({ children }: { children: ReactNode }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const scrollAmount = 400;
 
-  const handleScroll = (direction) => {
+  const handleScroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const currentScroll = scrollRef.current.scrollLeft;
       const newScroll = direction === 'left' 

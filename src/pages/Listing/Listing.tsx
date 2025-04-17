@@ -46,7 +46,6 @@ export default function Listing() {
           trade.offeredCard.cardId === Number(id)
         );
         setTrades(relevantTrades);
-
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch data');
       } finally {
