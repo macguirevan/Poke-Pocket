@@ -34,8 +34,6 @@ export default function Footer() {
       <div className={styles.footerBottom}>
         <div className={styles.legalLinks}>
           <Link to="/terms" className={styles.legalLink}>Terms of Service</Link>
-          <span className={styles.divider}>|</span>
-          <Link to="/privacy" className={styles.legalLink}>Privacy Policy</Link>
         </div>
         <p className={styles.copyright}>&copy; {new Date().getFullYear()} Poké Pocket. All rights reserved.</p>
       </div>
