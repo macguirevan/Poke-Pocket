@@ -1,28 +1,3 @@
-# version: '3.8'
-
-# services:
-#   db:
-#     image: mysql:8.0
-#     container_name: mysql-db
-#     environment:
-#       MYSQL_ROOT_PASSWORD: root          # Set the root password
-#       MYSQL_DATABASE: pokepocket         # Set the default database name
-#     ports:
-#       - "3306:3306"  # Expose MySQL port to the host machine
-#     networks:
-#       - pokepocket-network
-#     restart: always  # Restart the container automatically
-#     hostname: mysql-db-host
-#     volumes:
-#       - mysql-data:/var/lib/mysql
-
-# networks:
-#   pokepocket-network:
-#     driver: bridge
-
-# volumes:
-#   mysql-data: {}
-
 version: '3.8'
 
 services:
