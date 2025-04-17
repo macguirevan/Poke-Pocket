@@ -21,7 +21,7 @@ interface Listing {
 }
 
 export default function Home() {
-  const [listings, setListings] = useState([]);
+  const [listings, setListings] = useState<Listing[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
