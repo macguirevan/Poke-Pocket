@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Auth from './Auth/Auth'
 import Avatar from './Avatar/Avatar'
 import styles from './Header.module.css'
+import CreateListingButton from './CreateListingButton/CreateListingButton';
 
 export default function Header() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId') !== null);
@@ -41,7 +42,7 @@ export default function Header() {
         <img src={Logo} alt="Logo" width="200px" />
       </Link>
       <input className={styles.searchInput} placeholder="Search" />
-      {loggedIn ? <Avatar /> : <Auth />}
+      {loggedIn ?  <><CreateListingButton /><Avatar/></> : <Auth />}
     </header>
   )
 }

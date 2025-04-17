@@ -4,6 +4,7 @@ import Listing from './pages/Listing/Listing'
 import User from './pages/User/User'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
+import CreateListing from './pages/CreateListing/CreateListing'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default function App() {
@@ -12,7 +13,7 @@ export default function App() {
       <Route path="/" element={<Home />} />
       <Route path="/listing" element={<Listing />} />
       <Route path="/listing/:id" element={<Listing />} />
-      
+      <Route path="/createlisting" element={<CreateListing />} />
       {/* Single route pattern handles all usernames */}
       <Route path="/user/:userId" element={<User />} />
       

@@ -1,13 +1,7 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../../layout/Layout';
 import './Home.css';
-
-const mockListings = Array(20).fill(null).map((_, i) => ({
-  id: i + 1,
-  title: `Heracross ${i + 1}`,
-  image: 'https://pocket.pokemongohub.net/_next/image?url=%2Ftcg-pocket%2Fcards%2Fa2a%2Fwebp%2FcPK_10_004250_00_HERACROS_U_M_M_en_US.webp&w=828&q=75'
-}));
 
 const HorizontalScroll = ({ children }) => {
   const scrollRef = useRef(null);
@@ -50,48 +44,82 @@ const HorizontalScroll = ({ children }) => {
   );
 };
 
+interface Listing {
+  tradeId: number;
+  offeredCard: Card;
+  requestedCard1: Card;
+  requestedCard2: Card;
+  requestedCard3: Card;
+  requestedCard4: Card;
+}
+
+interface Card {
+  cardId: number;
+  name: string;
+  rarity: number;
+  setName: string;
+  cardImage: string;
+}
+
 export default function Home() {
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
+
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/trades");
+        if (!response.ok) {
+          throw new Error("Failed to fetch listings");
+        }
+        const data: Listing[] = await response.json();
+        setListings(data);
+      } catch (err: any) {
+        console.error("Error fetching listings:", err);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchListings();
+  }, []);
+
   return (
     <Layout>
       <div className="home-container">
         <section className="listings-section">
           <h2>Trending Listings</h2>
-          <HorizontalScroll>
-            {mockListings.map((listing) => (
-              <div key={listing.id} className="card-wrapper">
-                <Link to={`/listing/${listing.id}`}>
-                  <img 
-                    src={listing.image} 
-                    alt={listing.title}
-                    className="card-image"
-                  />
-                  <div className="card-details">
-                    <h3>{listing.title}</h3>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </HorizontalScroll>
-        </section>
-
-        <section className="listings-section">
-          <h2>New Listings</h2>
-          <HorizontalScroll>
-            {[...mockListings].reverse().map((listing) => (
-              <div key={listing.id} className="card-wrapper">
-                <Link to={`/listing/${listing.id}`}>
-                  <img 
-                    src={listing.image} 
-                    alt={listing.title}
-                    className="card-image"
-                  />
-                  <div className="card-details">
-                    <h3>{listing.title}</h3>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </HorizontalScroll>
+          {isLoading ? (
+            <div className="loading-container">
+              <div className="loading-spinner" />
+            </div>
+          ) : listings.length === 0 ? (
+            <p>No trade listings</p>
+          ) : (
+            <HorizontalScroll>
+              {listings.map((listing) => (
+                <div key={listing.tradeId} className="card-wrapper">
+                  <Link to={`/listing/${listing.tradeId}`}>
+                    <img 
+                      src={listing.offeredCard.cardImage} 
+                      alt={listing.offeredCard.name}
+                      className="card-image"
+                      style={{
+                        width: "183.5px",
+                        height: "256px",
+                        objectFit: "cover",
+                      }}
+                    />
+                    <div className="card-details">
+                      <h3>{listing.offeredCard.name}</h3>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </HorizontalScroll>
+          )}
         </section>
       </div>
     </Layout>

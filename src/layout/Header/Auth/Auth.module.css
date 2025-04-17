@@ -1,29 +1,35 @@
 .auth {
   display: flex;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin: 0;
+  gap: 1rem;
+  align-items: center;
 }
 
 .auth a {
-  color: black;
-  padding: 5px 20px;
-  margin: 0 10px;
-  width: 100px;
-  text-align: center;
-  border-radius: 45px;
-}
-
-.auth a:hover {
-  cursor: pointer;
-  transition: filter 0.2s ease;
-  filter: brightness(90%);
+  padding: 0.6rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-decoration: none;
 }
 
 .login {
-  background-color: white;
+  background: rgba(255, 255, 255, 0.9);
+  color: #092A56;
+  border: 2px solid transparent;
+}
+
+.login:hover {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .register {
-  background-color: #D1D1D1;
+  background: #092A56;
+  color: white;
+}
+
+.register:hover {
+  background: #1a3d6d;
+  transform: translateY(-1px);
 }

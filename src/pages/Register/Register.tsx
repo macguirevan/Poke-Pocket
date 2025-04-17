@@ -44,26 +44,41 @@ export default function SignUp() {
   
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(errorText || "Failed to create account");
+        const errorJson = JSON.parse(errorText);
+        throw errorJson;
       }
   
-      const data = await response.json();
-      console.log("Success:", data);
-      setUsername("");
-      setPassword("");
-      setConfirmPassword("");
-      setEmail("");
-      setFriendID("");
-      setErrorMessage("");
-      setSuccessMessage("Account created successfully! Redirecting...");
-      setTimeout(() => navigate("/"), 1000);
+      // Make API request to fetch the userId based on the username that was posted
+      try {
+        const response = await fetch(`http://localhost:8080/api/users/username/${username}`, {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+          },
+        });
+      
+        if (!response.ok) {
+          throw new Error("Failed to fetch user by username");
+        }
+      
+        const userData = await response.json();
+      
+        localStorage.setItem("userId", userData.userId);
+        localStorage.setItem("username", username);
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
+        setEmail("");
+        setFriendID("");
+        setErrorMessage("");
+        setSuccessMessage("Account created successfully! Redirecting...");
+        setTimeout(() => navigate("/"), 1000);
+      } catch (error: any) {
+        console.error("Error fetching user:", error);
+      }
     } catch (error : any) {
-      /* TODO: 
-          Make a get request to the database and find what is the duplicate of, Username/Email/FriendID
-          Set the error message based on that 
-      */
       console.error("Error:", error);
-      setErrorMessage(error.message || "An error occurred. Please try again.");
+      setErrorMessage(error.detail || "An error occurred. Please try again.");
     }
   };
 
