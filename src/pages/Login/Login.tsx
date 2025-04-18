@@ -15,7 +15,7 @@ export default function Login() {
     event.preventDefault();
     try {
       // Sending POST request to Spring Boot backend
-      const response = await fetch("http://54.175.234.211:8080/api/users/login", {
+      const response = await fetch("http://54.91.5.191:8080/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function Login() {
       
       // Make API call to get Unique Generated User ID
       try {
-        const response = await fetch("http://54.175.234.211:8080/api/users", {
+        const response = await fetch("http://54.91.5.191:8080/api/users", {
           method: "GET",
           headers: {
             "Accept": "application/json",
